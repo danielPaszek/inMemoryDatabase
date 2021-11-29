@@ -12,7 +12,7 @@ export class MapDB<DataType extends MapMinimalRecord> extends BaseDB<DataType> {
     else return undefined;
   }
   push(item: DataType): void {
-    this.pubSub.beforeAddToDbListeners.publish({
+    this.pubSub.getBeforeAddToDbListeners().publish({
       newValue: item,
       value: this.get(item.id),
     });
@@ -21,7 +21,7 @@ export class MapDB<DataType extends MapMinimalRecord> extends BaseDB<DataType> {
     } catch (error) {
       throw new Error("push error");
     }
-    this.pubSub.afterAddToDbListeners.publish({ newValue: item });
+    this.pubSub.getAfterAddToDbListeners().publish({ newValue: item });
   }
   visit(cb: (item: DataType) => void): void {
     this.db.forEach((el) => cb(el));

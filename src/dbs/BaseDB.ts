@@ -1,11 +1,12 @@
+import { IObserver } from "src/types";
 import { Observer } from "../utils/observer";
 
 export abstract class BaseDB<DataType> {
-  protected pubSub: Observer<DataType>;
+  protected pubSub: IObserver<DataType>;
   public subscribe() {
     return {
-      beforeAddToDb: this.pubSub.beforeAddToDbListeners.subscribe,
-      afterAddToDb: this.pubSub.afterAddToDbListeners.subscribe,
+      beforeAddToDb: this.pubSub.getBeforeAddToDbListeners().subscribe,
+      afterAddToDb: this.pubSub.getAfterAddToDbListeners().subscribe,
     };
   }
   abstract visit(cb: (item: DataType) => void): void;

@@ -10,20 +10,20 @@ export class ObjectDB<
     this.db = {};
   }
   get(id: keyof any): DataType | undefined {
-    if (id) return this.db[id];
+    if (id) return this.db[String(id)];
     else return undefined;
   }
   push(item: DataType): void {
-    this.pubSub.beforeAddToDbListeners.publish({
+    this.pubSub.getBeforeAddToDbListeners().publish({
       newValue: item,
-      value: this.db[item.id],
+      value: this.db[String(item.id)],
     });
     try {
-      this.db[item.id] = item;
+      this.db[String(item.id)] = item;
     } catch (error) {
       throw new Error("push error");
     }
-    this.pubSub.afterAddToDbListeners.publish({ newValue: item });
+    this.pubSub.getAfterAddToDbListeners().publish({ newValue: item });
   }
   visit(cb: (item: DataType) => void): void {
     Object.keys(this.db).forEach((key) => cb(this.db[key]));

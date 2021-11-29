@@ -1,9 +1,6 @@
-import { MapMinimalRecord } from "src/types";
 import { BaseDB } from "./BaseDB";
 
-export class ArrayDB<
-  DataType extends MapMinimalRecord
-> extends BaseDB<DataType> {
+export class ArrayDB<DataType> extends BaseDB<DataType> {
   protected db: DataType[];
   public constructor() {
     super();
@@ -11,14 +8,12 @@ export class ArrayDB<
   }
   get(id: keyof any): DataType | undefined {
     if (id) {
-      for (const item of this.db) {
-        if (item.id === id) return item;
-      }
+      return this.db[Number(id)];
     }
     return undefined;
   }
   push(item: DataType): void {
-    this.pubSub.beforeAddToDbListeners.publish({
+    this.pubSub.getBeforeAddToDbListeners().publish({
       newValue: item,
     });
     try {
@@ -26,12 +21,12 @@ export class ArrayDB<
     } catch (error) {
       throw new Error("push error");
     }
-    this.pubSub.afterAddToDbListeners.publish({ newValue: item });
+    this.pubSub.getAfterAddToDbListeners().publish({ newValue: item });
   }
   visit(cb: (item: DataType) => void): void {
     this.db.forEach((el) => cb(el));
   }
-  clear() {
+  clear(): void {
     this.db = [];
   }
 }

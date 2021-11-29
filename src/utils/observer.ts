@@ -7,11 +7,16 @@ import {
 } from "../types";
 
 export class Observer<DataType> implements IObserver<DataType> {
-  public beforeAddToDbListeners =
+  private beforeAddToDbListeners =
     this.createObserver<BeforeEventType<DataType>>();
-  public afterAddToDbListeners =
+  private afterAddToDbListeners =
     this.createObserver<AfterEventType<DataType>>();
-
+  public getBeforeAddToDbListeners() {
+    return this.beforeAddToDbListeners;
+  }
+  public getAfterAddToDbListeners() {
+    return this.afterAddToDbListeners;
+  }
   private createObserver<EventType>(): {
     // subscribe returns unsubscribe function(like useEffect())
     subscribe: Subscribe<EventType>;

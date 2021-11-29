@@ -19,4 +19,7 @@ export class TreeDB<
   getInOrder() {
     return this.db.inOrder();
   }
+  contains(item: DataType) {
+    return this.db.contains(item);
+  }
 }
