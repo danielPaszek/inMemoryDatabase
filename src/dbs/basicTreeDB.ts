@@ -14,7 +14,7 @@ export class BasicTreeDB<
     return this.db.getRoot()?.value;
   }
   push(item: DataType): void {
-    this.getPubSub().beforeAddToDbListeners.publish({
+    this.pubSub.beforeAddToDbListeners.publish({
       newValue: item,
     });
     try {
@@ -22,7 +22,7 @@ export class BasicTreeDB<
     } catch (error) {
       throw new Error("push error");
     }
-    this.getPubSub().afterAddToDbListeners.publish({ newValue: item });
+    this.pubSub.afterAddToDbListeners.publish({ newValue: item });
   }
   visit(cb: (item: DataType) => void): void {
     this.db.inOrder().forEach((el) => cb(el));

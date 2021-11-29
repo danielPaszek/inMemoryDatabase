@@ -1,6 +1,12 @@
-import { AfterEventType, BeforeEventType, Listener } from "../types";
+import {
+  AfterEventType,
+  BeforeEventType,
+  IObserver,
+  Listener,
+  Subscribe,
+} from "../types";
 
-export class Observer<DataType> {
+export class Observer<DataType> implements IObserver<DataType> {
   public beforeAddToDbListeners =
     this.createObserver<BeforeEventType<DataType>>();
   public afterAddToDbListeners =
@@ -8,7 +14,7 @@ export class Observer<DataType> {
 
   private createObserver<EventType>(): {
     // subscribe returns unsubscribe function(like useEffect())
-    subscribe: (cb: Listener<EventType>) => () => void;
+    subscribe: Subscribe<EventType>;
     // call all listeners
     publish: (ev: EventType) => void;
   } {

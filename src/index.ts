@@ -8,15 +8,13 @@ const data: Employee[] = JSON.parse(
 );
 const myDB = new ArrayDB<Employee>();
 
-const stopLogging = myDB
-  .getPubSub()
-  .afterAddToDbListeners.subscribe((el) => console.log(el));
+const unsubscribe = myDB.subscribe().afterAddToDb((item) => console.log(item));
 
 for (let i = 0; i < 50; i++) {
   myDB.push(data[i]);
 }
 // last id:50
-stopLogging();
+unsubscribe();
 
 for (let i = 51; i < 100; i++) {
   myDB.push(data[i]);

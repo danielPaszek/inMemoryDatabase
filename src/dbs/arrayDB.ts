@@ -18,16 +18,15 @@ export class ArrayDB<
     return undefined;
   }
   push(item: DataType): void {
-    this.getPubSub().beforeAddToDbListeners.publish({
+    this.pubSub.beforeAddToDbListeners.publish({
       newValue: item,
-      value: this.get(item.id),
     });
     try {
       this.db.push(item);
     } catch (error) {
       throw new Error("push error");
     }
-    this.getPubSub().afterAddToDbListeners.publish({ newValue: item });
+    this.pubSub.afterAddToDbListeners.publish({ newValue: item });
   }
   visit(cb: (item: DataType) => void): void {
     this.db.forEach((el) => cb(el));

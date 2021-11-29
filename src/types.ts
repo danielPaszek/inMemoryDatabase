@@ -29,3 +29,15 @@ export interface BinaryTree<T> {
   postOrder(): T[];
   clear(): void;
 }
+export type Subscribe<EventType> = (cb: Listener<EventType>) => () => void;
+
+export interface IObserver<DataType> {
+  beforeAddToDbListeners: {
+    subscribe: Subscribe<BeforeEventType<DataType>>;
+    publish: (ev: BeforeEventType<DataType>) => void;
+  };
+  afterAddToDbListeners: {
+    subscribe: Subscribe<AfterEventType<DataType>>;
+    publish: (ev: AfterEventType<DataType>) => void;
+  };
+}
