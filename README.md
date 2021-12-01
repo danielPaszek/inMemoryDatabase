@@ -13,14 +13,14 @@ Some of our structures require specific data type (e.g. Map requires id in your 
 #### All of dbs implement interface
 ```
 interface BasicDB<DataType> {
-	+subscribe():  {  
+	subscribe():  {  
 		AddBeforeAddToDb: Subscribe<BeforeEventType<DataType>>  
 		AddAfterAddToDb: Subscribe<AfterEventType<DataType>>  
 	}
-	+visit(cb: (item: DataType) => void): void  
-	+push(item: DataType): void  
-	+get(id?: keyof any): DataType | undefined  
-	+clear(): void
+	visit(cb: (item: DataType) => void): void  
+	push(item: DataType): void  
+	get(id?: keyof any): DataType | undefined  
+	clear(): void
 }
 ```
 
