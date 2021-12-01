@@ -5,8 +5,8 @@ export abstract class BaseDB<DataType> {
   protected pubSub: IObserver<DataType>;
   public subscribe() {
     return {
-      beforeAddToDb: this.pubSub.getBeforeAddToDbListeners().subscribe,
-      afterAddToDb: this.pubSub.getAfterAddToDbListeners().subscribe,
+      AddBeforeAddToDb: this.pubSub.getBeforeAddToDbListeners().subscribe,
+      AddAfterAddToDb: this.pubSub.getAfterAddToDbListeners().subscribe,
     };
   }
   abstract visit(cb: (item: DataType) => void): void;

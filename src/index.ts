@@ -8,13 +8,21 @@ const data: Employee[] = JSON.parse(
 );
 const myDB = new ArrayDB<Employee>();
 
-const unsubscribe = myDB.subscribe().afterAddToDb((item) => console.log(item));
-
+const unsubscribe = myDB
+  .subscribe()
+  .AddAfterAddToDb(({ newValue }) => console.log(newValue));
+// unsubscribe();
+const unsubscribe2 = myDB
+  .subscribe()
+  .AddBeforeAddToDb(({ newValue, value }) =>
+    console.log(`newValue:${newValue} \n value:${value}`)
+  );
+const sub = myDB.subscribe();
 for (let i = 0; i < 50; i++) {
   myDB.push(data[i]);
 }
 // last id:50
-unsubscribe();
+// unsubscribe();
 
 for (let i = 51; i < 100; i++) {
   myDB.push(data[i]);

@@ -95,6 +95,7 @@ export class Tree<T extends TreeMinimalRecord> implements BinaryTree<T> {
     return results;
   }
   clear() {
+    // hope it works
     this.root = undefined;
   }
 }
