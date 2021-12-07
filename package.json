@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev1": "tsc -w",
+    "dev2": "nodemon dist/index.js",
+    "start": "tsc && node dist/index.js",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
