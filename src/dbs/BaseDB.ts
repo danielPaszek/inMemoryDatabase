@@ -2,7 +2,8 @@ import { IObserver } from "../types";
 import { Observer } from "../utils/observer";
 
 export abstract class BaseDB<DataType> {
-  protected pubSub!: IObserver<DataType>;
+  //You can create your own observer that implements this interface :)
+  protected pubSub: IObserver<DataType>;
   public subscribe() {
     return {
       AddBeforeAddToDb: this.pubSub.getBeforeAddToDbListeners().subscribe,
@@ -18,6 +19,7 @@ export abstract class BaseDB<DataType> {
   abstract clear(): void;
   //default observer
   constructor(observer: IObserver<DataType> = new Observer<DataType>()) {
-    if (observer) this.pubSub = observer;
+    //observer has default value -> if not necessary
+    this.pubSub = observer;
   }
 }

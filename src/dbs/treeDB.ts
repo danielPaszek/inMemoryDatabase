@@ -1,7 +1,8 @@
 import { TreeMinimalRecord } from "../types";
 import { BasicTreeDB } from "./basicTreeDB";
 /**
- * DataType require valuOf(): number | string to evaluate object
+ * @template DataType require valuOf(): number | string to evaluate object
+ *
  */
 export class TreeDB<
   DataType extends TreeMinimalRecord
