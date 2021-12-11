@@ -2,7 +2,7 @@ import { IObserver } from "../types";
 import { Observer } from "../utils/observer";
 
 export abstract class BaseDB<DataType> {
-  protected pubSub: IObserver<DataType>;
+  protected pubSub!: IObserver<DataType>;
   public subscribe() {
     return {
       AddBeforeAddToDb: this.pubSub.getBeforeAddToDbListeners().subscribe,
@@ -18,7 +18,6 @@ export abstract class BaseDB<DataType> {
   abstract clear(): void;
   //default observer
   constructor(observer: IObserver<DataType> = new Observer<DataType>()) {
-    this.pubSub = observer;
-    // console.log(this.pubSub);
+    if (observer) this.pubSub = observer;
   }
 }
