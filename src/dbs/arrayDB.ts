@@ -1,9 +1,10 @@
+import { IObserver } from "../types";
 import { BaseDB } from "./BaseDB";
 
 export class ArrayDB<DataType> extends BaseDB<DataType> {
   protected db: DataType[];
-  public constructor() {
-    super();
+  public constructor(observer?: IObserver<DataType>) {
+    super(observer);
     this.db = [];
   }
   get(id: keyof any): DataType | undefined {

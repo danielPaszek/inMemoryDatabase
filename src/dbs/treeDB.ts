@@ -1,6 +1,8 @@
-import { TreeMinimalRecord } from "src/types";
+import { TreeMinimalRecord } from "../types";
 import { BasicTreeDB } from "./basicTreeDB";
-
+/**
+ * DataType require valuOf(): number | string to evaluate object
+ */
 export class TreeDB<
   DataType extends TreeMinimalRecord
 > extends BasicTreeDB<DataType> {

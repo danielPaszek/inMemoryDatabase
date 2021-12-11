@@ -1,4 +1,4 @@
-import { IObserver } from "src/types";
+import { IObserver } from "../types";
 import { Observer } from "../utils/observer";
 
 export abstract class BaseDB<DataType> {
@@ -16,7 +16,9 @@ export abstract class BaseDB<DataType> {
     this.visit((item) => console.log(item));
   }
   abstract clear(): void;
-  constructor() {
-    this.pubSub = new Observer<DataType>();
+  //default observer
+  constructor(observer: IObserver<DataType> = new Observer<DataType>()) {
+    this.pubSub = observer;
+    // console.log(this.pubSub);
   }
 }

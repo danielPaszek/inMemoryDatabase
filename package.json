@@ -1,8 +1,8 @@
 {
-  "name": "ts-2",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "pubs-db",
+  "version": "1.0.1",
+  "description": "InMemoryDatabase",
+  "main": "index.ts",
   "scripts": {
     "dev1": "tsc -w",
     "dev2": "nodemon dist/index.js",
@@ -12,7 +12,5 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^16.11.10"
-  }
+  "homepage": "https://github.com/danielPaszek/inMemoryDatabase#readme"
 }

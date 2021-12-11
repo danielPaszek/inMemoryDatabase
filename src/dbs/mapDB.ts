@@ -1,10 +1,10 @@
 import { BaseDB } from "./BaseDB";
-import { MapMinimalRecord } from "../types";
+import { IObserver, MapMinimalRecord } from "../types";
 
 export class MapDB<DataType extends MapMinimalRecord> extends BaseDB<DataType> {
   protected db: Map<keyof any, DataType>;
-  public constructor() {
-    super();
+  public constructor(observer?: IObserver<DataType>) {
+    super(observer);
     this.db = new Map<keyof any, DataType>();
   }
   get(id: keyof any): DataType | undefined {
