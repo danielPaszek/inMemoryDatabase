@@ -1,7 +1,7 @@
-import * as fs from "fs";
-
 import { TreeDB } from "pubs-db";
 import { Employee } from "./types";
+import * as fs from "fs";
+import * as path from "path";
 
 const rawData: Employee[] = JSON.parse(
   fs.readFileSync(path.join(__dirname, "../MOCK_DATA.json")).toString()
