@@ -1,4 +1,4 @@
-# PubsDB
+# pubs-db
 
 It is an in memory database system package, that allows you to manage state. You can use it with node.js, react or other framework. We support few data structures like Tree, Map, Array and Object.
 
@@ -7,7 +7,7 @@ It is an in memory database system package, that allows you to manage state. You
 To use our state manager create new db ("name of data structure+DB")
 
 ```
-import { TreeDB } from 'PubsDB'
+import { TreeDB } from 'pubs-db'
 
 const myDB = new TreeDB<DataType>();
 ```
