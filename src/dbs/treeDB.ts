@@ -1,4 +1,4 @@
-import { TreeMinimalRecord } from "src/types";
+import { TreeMinimalRecord } from "../types";
 import { BasicTreeDB } from "./basicTreeDB";
 
 export class TreeDB<
@@ -21,5 +21,8 @@ export class TreeDB<
   }
   contains(item: DataType) {
     return this.db.contains(item);
+  }
+  clg() {
+    console.log(this.db);
   }
 }

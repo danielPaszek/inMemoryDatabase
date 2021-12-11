@@ -1,13 +1,13 @@
 import { BaseDB } from "./BaseDB";
-import { BinaryTree, TreeMinimalRecord } from "../types";
-import { Tree } from "src/utils/tree";
+import { BinaryTree, IObserver, TreeMinimalRecord } from "../types";
+import { Tree } from "../utils/tree";
 
 export class BasicTreeDB<
   DataType extends TreeMinimalRecord
 > extends BaseDB<DataType> {
   protected db: BinaryTree<DataType>;
-  public constructor() {
-    super();
+  public constructor(observer?: IObserver<DataType>) {
+    super(observer);
     this.db = new Tree<DataType>();
   }
   get(): DataType | undefined {

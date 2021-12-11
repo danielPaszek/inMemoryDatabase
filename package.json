@@ -1,7 +1,7 @@
 {
-  "name": "ts-2",
+  "name": "pubs-db",
   "version": "1.0.0",
-  "description": "",
+  "description": "InMemoryDatabase",
   "main": "index.js",
   "scripts": {
     "dev1": "tsc -w",
@@ -13,6 +13,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^16.11.10"
-  }
+    "@types/node": "^16.11.10",
+    "typescript": "^4.5.2"
+  },
+  "dependencies": {}
 }
