@@ -12,7 +12,7 @@ export interface MapMinimalRecord {
 }
 //checks if it can evaluate object
 export interface TreeMinimalRecord {
-  valueOf: () => any;
+  valueOf: () => number | string;
 }
 export interface INode<T> {
   value: T;

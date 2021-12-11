@@ -1,15 +1,20 @@
 {
-  "name": "ts-2",
+  "name": "pubs-db",
   "version": "1.0.0",
-  "description": "",
+  "description": "InMemoryDatabase",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev1": "tsc -w",
+    "dev2": "nodemon dist/index.js",
+    "start": "tsc && node dist/index.js",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^16.11.10"
-  }
+    "@types/node": "^16.11.10",
+    "typescript": "^4.5.2"
+  },
+  "dependencies": {}
 }
