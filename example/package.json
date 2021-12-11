@@ -4,12 +4,15 @@
   "description": "InMemoryDatabase",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev1": "tsc -w",
+    "dev2": "nodemon dist/index.js",
+    "start": "tsc && node dist/index.js",
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@types/node": "^16.11.12",
-    "pubs-db": "^1.0.1"
+    "pubs-db": "^1.0.2"
   }
 }

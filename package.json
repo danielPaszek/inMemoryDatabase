@@ -1,14 +1,9 @@
 {
   "name": "pubs-db",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "InMemoryDatabase",
   "main": "index.ts",
-  "scripts": {
-    "dev1": "tsc -w",
-    "dev2": "nodemon dist/index.js",
-    "start": "tsc && node dist/index.js",
-    "build": "tsc"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
