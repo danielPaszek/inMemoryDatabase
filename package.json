@@ -1,8 +1,9 @@
 {
   "name": "pubs-db",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "InMemoryDatabase",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "dev1": "tsc -w",
