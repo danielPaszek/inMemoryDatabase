@@ -2,10 +2,20 @@
   "name": "pubs-db",
   "version": "1.0.2",
   "description": "InMemoryDatabase",
-  "main": "src/index.ts",
-  "scripts": {},
-  "keywords": [],
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev1": "tsc -w",
+    "dev2": "nodemon dist/index.js"
+  },
+  "keywords": [
+    "inMemoryDatabase"
+  ],
   "author": "",
   "license": "ISC",
-  "homepage": "https://github.com/danielPaszek/inMemoryDatabase#readme"
+  "homepage": "https://github.com/danielPaszek/inMemoryDatabase#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielPaszek/inMemoryDatabase.git"
+  }
 }

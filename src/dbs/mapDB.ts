@@ -4,7 +4,7 @@ import { IObserver, MapMinimalRecord } from "../types";
 /**
  * id is stored in db and also is a key!
  *
- * @template DataType extends {id: keyof any} althought with symbol some bugs might happen so it is not recommended
+ * @template DataType extends {id: keyof any} althought symbol is not recommended (because I'm not sure how it works)
  *
  */
 export class MapDB<DataType extends MapMinimalRecord> extends BaseDB<DataType> {
