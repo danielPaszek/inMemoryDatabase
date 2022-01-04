@@ -3,6 +3,7 @@ import { Observer } from "../utils/observer";
 
 export abstract class BaseDB<DataType> {
   //You can create your own observer that implements this interface :)
+  //e.g with set instead of array
   protected pubSub: IObserver<DataType>;
   public subscribe() {
     return {
