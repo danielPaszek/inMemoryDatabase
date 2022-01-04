@@ -8,7 +8,6 @@ const rawData: Employee[] = JSON.parse(
 );
 const data = rawData.map((item) => new Employee(item));
 const myDB = new TreeDB<Employee>();
-
 const unsubscribe = myDB
   .subscribe()
   .AddAfterAddToDb(({ newValue }) => console.log(newValue));
