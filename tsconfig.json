@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "es6",
+    "module": "ES6",
     "lib": ["dom", "es6", "es2017", "esnext.asynciterable"],
     "outDir": "./dist",
     "moduleResolution": "node",
@@ -17,7 +17,8 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "declaration": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "declarationDir": "./types"
   },
   "exclude": ["node_modules"],
   "include": ["./src/**/*.ts"]

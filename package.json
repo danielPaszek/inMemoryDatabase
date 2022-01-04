@@ -2,10 +2,11 @@
   "name": "pubs-db",
   "version": "1.0.3",
   "description": "InMemoryDatabase",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "lib/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "gen": "tsc",
+    "build": "babel dist --out-dir lib",
     "dev1": "tsc -w",
     "dev2": "nodemon dist/index.js"
   },
@@ -18,5 +19,10 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/danielPaszek/inMemoryDatabase.git"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.16.7",
+    "@babel/core": "^7.16.7",
+    "@babel/preset-env": "^7.16.7"
   }
 }
