@@ -13,6 +13,6 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^16.11.12",
-    "pubs-db": "^1.0.2"
+    "pubs-db": "^1.1.0"
   }
 }
