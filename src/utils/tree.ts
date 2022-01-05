@@ -95,7 +95,72 @@ export class Tree<T extends TreeMinimalRecord> implements BinaryTree<T> {
     return results;
   }
   clear() {
-    // hope it works
+    // I hope that's how garbage collector works :)
     this.root = undefined;
+  }
+  // copied from internet, I hope it works
+  delete(item: T) {
+    if (!this.root) return;
+
+    if (!this.root.left && !this.root.right) {
+      if (this.root.value == item) {
+        this.root = undefined;
+        return;
+      } else return;
+    }
+
+    let q = [];
+    q.push(this.root);
+    let temp: INode<T> | undefined;
+    let keyNode: INode<T> | undefined;
+
+    // Do level order traversal until
+    // we find key and last node.
+    while (q.length > 0) {
+      temp = q[0];
+      q.shift();
+
+      if (temp?.value == item) keyNode = temp;
+
+      if (temp?.left) q.push(temp.left);
+
+      if (temp?.right) q.push(temp.right);
+    }
+
+    if (keyNode) {
+      let x = temp?.value;
+      this.deleteDeepest(temp!);
+      keyNode.value = x!;
+    }
+  }
+  deleteDeepest(delNode: INode<T>) {
+    let q = [];
+    q.push(this.root);
+
+    let temp = null;
+
+    // Do level order traversal until last node
+    while (q.length > 0) {
+      temp = q[0];
+      q.shift();
+
+      if (temp == delNode) {
+        temp = null;
+        return;
+      }
+      if (temp?.right) {
+        if (temp.right == delNode) {
+          temp.right = undefined;
+          return;
+        } else q.push(temp.right);
+      }
+
+      if (temp?.left) {
+        if (temp.left == delNode) {
+          temp.left = undefined;
+          return;
+        } else q.push(temp.left);
+      }
+    }
   }
 }

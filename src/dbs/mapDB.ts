@@ -13,9 +13,34 @@ export class MapDB<DataType extends MapMinimalRecord> extends BaseDB<DataType> {
     super(observer);
     this.db = new Map<keyof any, DataType>();
   }
-  get(id: keyof any): DataType | undefined {
-    if (id) return this.db.get(id);
-    else return undefined;
+  /**
+   * @param id can accept whole item or just id
+   */
+  pop(id: keyof any | DataType): void {
+    if (
+      typeof id === "string" ||
+      typeof id === "symbol" ||
+      typeof id === "number"
+    ) {
+      this.db.delete(id);
+    } else {
+      this.db.delete(id.id);
+    }
+  }
+  /**
+   * @param id can accept whole item or just id
+   */
+  get(id?: keyof any | DataType): DataType | undefined {
+    if (id) {
+      if (
+        typeof id === "string" ||
+        typeof id === "symbol" ||
+        typeof id === "number"
+      )
+        return this.db.get(id);
+      else return this.db.get(id.id);
+    }
+    return undefined;
   }
   push(item: DataType): void {
     this.pubSub.getBeforeAddToDbListeners().publish({

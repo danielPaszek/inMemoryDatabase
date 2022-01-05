@@ -13,14 +13,18 @@ export abstract class BaseDB<DataType> {
   }
   abstract visit(cb: (item: DataType) => void): void;
   abstract push(item: DataType): void;
-  abstract get(id?: keyof any): DataType | undefined;
+  abstract get(id?: keyof any | DataType): DataType | undefined;
   print() {
     this.visit((item) => console.log(item));
   }
   abstract clear(): void;
+  /**
+   *
+   * @param item pass id when it makes sense :)
+   */
+  abstract pop(item: DataType | keyof any): void;
   //default observer
   constructor(observer: IObserver<DataType> = new Observer<DataType>()) {
-    //observer has default value -> if not necessary
     this.pubSub = observer;
   }
 }

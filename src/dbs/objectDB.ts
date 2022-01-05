@@ -3,7 +3,8 @@ import { IObserver, MapMinimalRecord } from "../types";
 
 /**
  * id is stored in db and also is a key!
- * @template DataType extends {id: keyof any} althought with symbol some bugs might happen so it is not recommended;
+ * @template DataType extends {id: keyof any} althought
+ * symbol is converted to string
  */
 export class ObjectDB<
   DataType extends MapMinimalRecord
@@ -13,9 +14,34 @@ export class ObjectDB<
     super(observer);
     this.db = {};
   }
-  get(id: keyof any): DataType | undefined {
-    if (id) return this.db[String(id)];
-    else return undefined;
+  /**
+   * @param id can accept whole item or just id
+   */
+  pop(key: keyof any | DataType) {
+    if (key) {
+      if (
+        typeof key === "string" ||
+        typeof key === "symbol" ||
+        typeof key === "number"
+      )
+        delete this.db[String(key)];
+      else delete this.db[String(key.id)];
+    }
+  }
+  /**
+   * @param id can accept whole item or just id
+   */
+  get(id?: keyof any | DataType): DataType | undefined {
+    if (id) {
+      if (
+        typeof id === "string" ||
+        typeof id === "symbol" ||
+        typeof id === "number"
+      )
+        return this.db[String(id)];
+      else return this.db[String(id.id)];
+    }
+    return undefined;
   }
   push(item: DataType): void {
     this.pubSub.getBeforeAddToDbListeners().publish({

@@ -10,8 +10,18 @@ export class BasicTreeDB<
     super(observer);
     this.db = new Tree<DataType>();
   }
-  get(): DataType | undefined {
+  pop(item: DataType) {
+    this.db.delete(item);
+  }
+  /**
+   * shouldn't use get in tree because it doesn't make a lot of sense
+   * use contains instead
+   * @returns root value for now
+   */
+  get(id?: keyof any): DataType | undefined {
     return this.db.getRoot()?.value;
+    // to use id
+    id = 0;
   }
   push(item: DataType): void {
     this.pubSub.getBeforeAddToDbListeners().publish({
