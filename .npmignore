@@ -1,5 +1,5 @@
 /node_modules
-/docs
 /example
 /src
 /dist
+tsconfig.json

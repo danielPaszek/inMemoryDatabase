@@ -7,8 +7,9 @@ export declare abstract class BaseDB<DataType> {
     };
     abstract visit(cb: (item: DataType) => void): void;
     abstract push(item: DataType): void;
-    abstract get(id?: keyof any): DataType | undefined;
+    abstract get(id?: keyof any | DataType): DataType | undefined;
     print(): void;
     abstract clear(): void;
+    abstract pop(item: DataType | keyof any): void;
     constructor(observer?: IObserver<DataType>);
 }

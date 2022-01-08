@@ -1,6 +1,6 @@
 {
   "name": "example1",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "InMemoryDatabase",
   "main": "src/index.ts",
   "scripts": {
@@ -13,6 +13,6 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^16.11.12",
-    "pubs-db": "^1.1.0"
+    "pubs-db": "^1.1.2"
   }
 }

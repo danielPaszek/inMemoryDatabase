@@ -18,10 +18,9 @@ export class BasicTreeDB<
    * use contains instead
    * @returns root value for now
    */
-  get(id?: keyof any): DataType | undefined {
+  get(): DataType | undefined {
     return this.db.getRoot()?.value;
     // to use id
-    id = 0;
   }
   push(item: DataType): void {
     this.pubSub.getBeforeAddToDbListeners().publish({

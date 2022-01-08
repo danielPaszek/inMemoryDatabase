@@ -9,24 +9,31 @@ export class ArrayDB<DataType> extends BaseDB<DataType> {
   }
   /**
    * PASS ONLY A VALUE! If DataType is e.g number
-   * can't tell if you will delete by index or value
+   * I can't tell if you will delete by index or value
    * @param item PASS ONLY A VALUE!
    */
   pop(item: DataType) {
     this.db = this.db.filter((el) => el !== item);
   }
   /**
-   * please don't use symbol here, I don't know how Number(Symbol) works
-   * @param item it can be index or element(to be used as contains method)
+   * please Sy
+   * @param item it can be index(if you pass number-even if your template is number!) or element(to be used as contains method)
    */
   get(item?: keyof any | DataType): DataType | undefined {
-    if (typeof item === "number" || typeof item === "string") {
-      return this.db[Number(item)];
-    } else if (typeof item !== "symbol") {
-      return this.db.find((el) => el === item);
+    try {
+      if (typeof item === "number") {
+        return this.db[item];
+      } else {
+        return this.db.find((el) => el === item);
+      }
+    } catch (error) {
+      return undefined;
     }
-    return undefined;
   }
+  /**
+   * Doesn't return old value for O(1) push
+   * @param item
+   */
   push(item: DataType): void {
     this.pubSub.getBeforeAddToDbListeners().publish({
       newValue: item,

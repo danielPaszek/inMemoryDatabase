@@ -13,4 +13,6 @@ export declare class Tree<T extends TreeMinimalRecord> implements BinaryTree<T> 
     inOrder(): T[];
     postOrder(): T[];
     clear(): void;
+    delete(item: T): void;
+    deleteDeepest(delNode: INode<T>): void;
 }

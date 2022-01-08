@@ -27,6 +27,7 @@ export interface BinaryTree<T> {
     postOrder(): T[];
     clear(): void;
     getRoot(): INode<T> | undefined;
+    delete(item: T): void;
 }
 export declare type Subscribe<EventType> = (cb: Listener<EventType>) => () => void;
 export interface IObserver<DataType> {

@@ -48,5 +48,5 @@ if (temp) {
   temp.gender = temp?.gender == "man" ? "woman" : "man";
   myDB.push(temp);
 }
-// can use temp or temp.id as well
+// can use temp or temp.id as well (if template is not a number!)
 myDB.pop(temp?.id);
