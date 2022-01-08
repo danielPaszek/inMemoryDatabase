@@ -1,7 +1,5 @@
 # pubs-db
 
-# ADD POP!!!
-
 It is an in memory database system package, that allows you to manage state for node.js. We support few data structures like Tree, Map, Array and Object.
 
 ### For PO project
@@ -26,7 +24,6 @@ const myDB = new TreeDB<DataType>();
 Some of our structures require specific data type (e.g. Map requires id in your data type). We have full typescript support so your IDE should tell you what exacly is required.
 
 #### All of dbs implement interface
-
 ```
 interface BasicDB<DataType> {
 	subscribe():  {
@@ -35,11 +32,12 @@ interface BasicDB<DataType> {
 	}
 	visit(cb: (item: DataType) => void): void
 	push(item: DataType): void
-	get(id?: keyof any): DataType | undefined
+	get(id?: keyof any | DataType): DataType | undefined
 	clear(): void
-	pop(item: DataType): void
+	pop(item: keyof any | DataType): void
 }
 ```
+Of course dbs implement keyof any where it makes sense
 
 ### Observer
 
