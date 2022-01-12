@@ -42,11 +42,11 @@ for (let i = 1; i < 100; i++) {
     console.log("Couldn't find employee (probably fired recently XD?)", i);
   }
 }
-// swap gender of employee so fire him/her xd
+// swap gender of employee and fire him/her :)
 const temp = myDB.get(15);
 if (temp) {
   temp.gender = temp?.gender == "man" ? "woman" : "man";
   myDB.push(temp);
+  myDB.pop(temp.id);
 }
-// can use temp or temp.id as well (if template is not a number!)
-myDB.pop(temp?.id);
+// can use temp or temp.id as well

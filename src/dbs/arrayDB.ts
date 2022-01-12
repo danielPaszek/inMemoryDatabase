@@ -16,11 +16,11 @@ export class ArrayDB<DataType> extends BaseDB<DataType> {
     this.db = this.db.filter((el) => el !== item);
   }
   /**
-   * please Sy
    * @param item it can be index(if you pass number-even if your template is number!) or element(to be used as contains method)
    */
   get(item?: keyof any | DataType): DataType | undefined {
     try {
+      if (item === undefined) return undefined;
       if (typeof item === "number") {
         return this.db[item];
       } else {
