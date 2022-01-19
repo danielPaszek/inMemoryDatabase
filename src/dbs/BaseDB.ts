@@ -22,8 +22,8 @@ export abstract class BaseDB<DataType> {
       console.log(error);
     }
   }
-  abstract _get(id?: keyof any | DataType): DataType | undefined;
-  get(id?: keyof any | DataType): DataType | undefined {
+  abstract _get(id: keyof any | DataType): DataType | undefined;
+  get(id: keyof any | DataType): DataType | undefined {
     try {
       const result = this._get(id);
       if (result) {

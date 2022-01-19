@@ -17,43 +17,38 @@ export class ObjectDB<
   /**
    * @param id can accept whole item or just id
    */
-  pop(key: keyof any | DataType) {
+  _pop(key: keyof any | DataType) {
     if (key) {
       if (
         typeof key === "string" ||
         typeof key === "symbol" ||
         typeof key === "number"
       )
-        delete this.db[String(key)];
-      else delete this.db[String(key.id)];
+        delete this.db[key];
+      else delete this.db[key.id];
     }
   }
   /**
    * @param id can accept whole item or just id
    */
-  get(id?: keyof any | DataType): DataType | undefined {
+  _get(id?: keyof any | DataType): DataType | undefined {
     if (id) {
       if (
         typeof id === "string" ||
         typeof id === "symbol" ||
         typeof id === "number"
       )
-        return this.db[String(id)];
-      else return this.db[String(id.id)];
+        return this.db[id];
+      else return this.db[id.id];
     }
     return undefined;
   }
-  push(item: DataType): void {
-    this.pubSub.getBeforeAddToDbListeners().publish({
-      newValue: item,
-      value: this.db[String(item.id)],
-    });
+  _push(item: DataType): void {
     try {
-      this.db[String(item.id)] = item;
+      this.db[item.id] = item;
     } catch (error) {
       throw new Error("push error");
     }
-    this.pubSub.getAfterAddToDbListeners().publish({ newValue: item });
   }
   visit(cb: (item: DataType) => void): void {
     Object.keys(this.db).forEach((key) => cb(this.db[key]));
