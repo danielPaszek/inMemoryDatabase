@@ -1,5 +1,5 @@
+import { NextObserver } from "src/utils/observerNext";
 import { IObserver } from "../types";
-import { Observer } from "../utils/observer";
 
 export abstract class BaseDB<DataType> {
   //You can create your own observer that implements this interface :)
@@ -7,24 +7,51 @@ export abstract class BaseDB<DataType> {
   protected pubSub: IObserver<DataType>;
   public subscribe() {
     return {
-      AddBeforeAddToDb: this.pubSub.getBeforeAddToDbListeners().subscribe,
-      AddAfterAddToDb: this.pubSub.getAfterAddToDbListeners().subscribe,
+      PushToDbListeners: this.pubSub.getPushToDbListeners().subscribe,
+      RemoveFromDbListeners: this.pubSub.getRemoveFromDbListeners().subscribe,
+      GetFromDbListeners: this.pubSub.getGetFromDbListeners().subscribe,
     };
   }
   abstract visit(cb: (item: DataType) => void): void;
-  abstract push(item: DataType): void;
-  abstract get(id?: keyof any | DataType): DataType | undefined;
+  abstract _push(item: DataType): void;
+  push(item: DataType): void {
+    try {
+      this._push(item);
+      this.pubSub.getPushToDbListeners().publish({ newValue: item });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  abstract _get(id?: keyof any | DataType): DataType | undefined;
+  get(id?: keyof any | DataType): DataType | undefined {
+    try {
+      const result = this._get(id);
+      if (result) {
+        this.pubSub.getGetFromDbListeners().publish({ accessedValue: result });
+        return result;
+      } else {
+        throw new Error("accessed value is undefined");
+      }
+    } catch (error) {
+      console.log(error);
+      return undefined;
+    }
+  }
   print() {
     this.visit((item) => console.log(item));
   }
   abstract clear(): void;
+  abstract _pop(id?: keyof any | DataType): void;
   /**
-   *
    * @param item pass id when it makes sense :)
    */
-  abstract pop(item: DataType | keyof any): void;
+  pop(item: DataType | keyof any): void {
+    try {
+      this._pop(item);
+    } catch (error) {}
+  }
   //default observer
-  constructor(observer: IObserver<DataType> = new Observer<DataType>()) {
+  constructor(observer: IObserver<DataType> = new NextObserver<DataType>()) {
     this.pubSub = observer;
   }
 }
