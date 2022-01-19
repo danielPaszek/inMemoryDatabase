@@ -12,7 +12,7 @@ export class ArrayDB<DataType> extends BaseDB<DataType> {
    * @param item number will always be treated as INDEX!!!
    * Otherwise as datatype AND WILL DELETE ALL OF ITS INSTANCES!
    */
-  _pop(item: DataType) {
+  protected _pop(item: DataType) {
     if (typeof item === "number") {
       this.db.splice(item, 1);
     } else {
@@ -22,7 +22,7 @@ export class ArrayDB<DataType> extends BaseDB<DataType> {
   /**
    * @param item it can be index(if you pass number-even if your template is number!) or element(to be used as contains method)
    */
-  _get(item: keyof any | DataType): DataType | undefined {
+  protected _get(item: keyof any | DataType): DataType | undefined {
     try {
       if (typeof item === "number") {
         return this.db[item];
@@ -34,7 +34,7 @@ export class ArrayDB<DataType> extends BaseDB<DataType> {
     }
   }
 
-  _push(item: DataType): void {
+  protected _push(item: DataType): void {
     try {
       this.db.push(item);
     } catch (error) {

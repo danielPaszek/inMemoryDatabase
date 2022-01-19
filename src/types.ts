@@ -53,3 +53,7 @@ export interface IObserver<DataType> {
     publish: (ev: GetEventType<DataType>) => void;
   };
 }
+export interface IFilter<DataType> {
+  isAllowed(item: DataType): boolean;
+  addFilter(filter: (item: DataType) => boolean): () => void;
+}

@@ -17,7 +17,7 @@ export class ObjectDB<
   /**
    * @param id can accept whole item or just id
    */
-  _pop(key: keyof any | DataType) {
+  protected _pop(key: keyof any | DataType) {
     if (key) {
       if (
         typeof key === "string" ||
@@ -31,7 +31,7 @@ export class ObjectDB<
   /**
    * @param id can accept whole item or just id
    */
-  _get(id?: keyof any | DataType): DataType | undefined {
+  protected _get(id?: keyof any | DataType): DataType | undefined {
     if (id) {
       if (
         typeof id === "string" ||
@@ -43,7 +43,7 @@ export class ObjectDB<
     }
     return undefined;
   }
-  _push(item: DataType): void {
+  protected _push(item: DataType): void {
     try {
       this.db[item.id] = item;
     } catch (error) {

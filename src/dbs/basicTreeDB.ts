@@ -10,7 +10,7 @@ export class BasicTreeDB<
     super(observer);
     this.db = new Tree<DataType>();
   }
-  _pop(item: DataType) {
+  protected _pop(item: DataType) {
     this.db.delete(item);
   }
   /**
@@ -18,11 +18,11 @@ export class BasicTreeDB<
    * use contains instead
    * @returns root value for now
    */
-  _get(): DataType | undefined {
+  protected _get(): DataType | undefined {
     return this.db.getRoot()?.value;
     // to use id
   }
-  _push(item: DataType): void {
+  protected _push(item: DataType): void {
     try {
       this.db.insert(item);
     } catch (error) {

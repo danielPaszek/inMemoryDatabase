@@ -7,3 +7,7 @@ export * from "./dbs/objectDB";
 export * from "./dbs/treeDB";
 export * from "./utils/observer";
 export * from "./utils/tree";
+// import { ArrayDB } from "./dbs/arrayDB";
+// const arr = new ArrayDB<number>();
+// arr.getFilter().addFilter((item) => item % 2 === 0);
+// arr.subscribe().PushToDbListeners((item) => console.log(item));

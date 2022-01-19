@@ -1,10 +1,16 @@
+import { Filter } from "src/utils/filter";
 import { Observer } from "src/utils/observer";
-import { IObserver } from "../types";
+import { IFilter, IObserver } from "../types";
 
 export abstract class BaseDB<DataType> {
   //You can create your own observer that implements this interface :)
   //e.g with set instead of array
   protected pubSub: IObserver<DataType>;
+  protected filter: IFilter<DataType>;
+  public getFilter() {
+    return this.filter;
+  }
+
   public subscribe() {
     return {
       PushToDbListeners: this.pubSub.getPushToDbListeners().subscribe,
@@ -13,7 +19,7 @@ export abstract class BaseDB<DataType> {
     };
   }
   abstract visit(cb: (item: DataType) => void): void;
-  abstract _push(item: DataType): void;
+  protected abstract _push(item: DataType): void;
   push(item: DataType): void {
     try {
       this._push(item);
@@ -22,7 +28,7 @@ export abstract class BaseDB<DataType> {
       console.log(error);
     }
   }
-  abstract _get(id: keyof any | DataType): DataType | undefined;
+  protected abstract _get(id: keyof any | DataType): DataType | undefined;
   get(id: keyof any | DataType): DataType | undefined {
     try {
       const result = this._get(id);
@@ -41,7 +47,7 @@ export abstract class BaseDB<DataType> {
     this.visit((item) => console.log(item));
   }
   abstract clear(): void;
-  abstract _pop(id?: keyof any | DataType): void;
+  protected abstract _pop(id?: keyof any | DataType): void;
   /**
    * @param item pass id when it makes sense :)
    */
@@ -51,7 +57,11 @@ export abstract class BaseDB<DataType> {
     } catch (error) {}
   }
   //default observer
-  constructor(observer: IObserver<DataType> = new Observer<DataType>()) {
+  constructor(
+    observer: IObserver<DataType> = new Observer<DataType>(),
+    filter: IFilter<DataType> = new Filter<DataType>()
+  ) {
     this.pubSub = observer;
+    this.filter = filter;
   }
 }

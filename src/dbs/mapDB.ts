@@ -16,7 +16,7 @@ export class MapDB<DataType extends MapMinimalRecord> extends BaseDB<DataType> {
   /**
    * @param id can accept whole item or just id
    */
-  _pop(id: keyof any | DataType): void {
+  protected _pop(id: keyof any | DataType): void {
     if (
       typeof id === "string" ||
       typeof id === "symbol" ||
@@ -30,7 +30,7 @@ export class MapDB<DataType extends MapMinimalRecord> extends BaseDB<DataType> {
   /**
    * @param id can accept whole item or just id
    */
-  _get(id?: keyof any | DataType): DataType | undefined {
+  protected _get(id?: keyof any | DataType): DataType | undefined {
     if (id) {
       if (
         typeof id === "string" ||
@@ -42,7 +42,7 @@ export class MapDB<DataType extends MapMinimalRecord> extends BaseDB<DataType> {
     }
     return undefined;
   }
-  _push(item: DataType): void {
+  protected _push(item: DataType): void {
     try {
       this.db.set(item.id, item);
     } catch (error) {
