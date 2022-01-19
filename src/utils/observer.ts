@@ -7,7 +7,7 @@ import {
   Subscribe,
 } from "../types";
 
-export class NextObserver<DataType> implements IObserver<DataType> {
+export class Observer<DataType> implements IObserver<DataType> {
   //get only new value
   private PushToDbListeners = this.createObserver<PushEventType<DataType>>();
   private RemoveFromDbListeners =

@@ -1,4 +1,4 @@
-import { NextObserver } from "src/utils/observerNext";
+import { Observer } from "src/utils/observer";
 import { IObserver } from "../types";
 
 export abstract class BaseDB<DataType> {
@@ -51,7 +51,7 @@ export abstract class BaseDB<DataType> {
     } catch (error) {}
   }
   //default observer
-  constructor(observer: IObserver<DataType> = new NextObserver<DataType>()) {
+  constructor(observer: IObserver<DataType> = new Observer<DataType>()) {
     this.pubSub = observer;
   }
 }
