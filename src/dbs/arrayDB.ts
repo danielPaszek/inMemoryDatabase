@@ -22,6 +22,7 @@ export class ArrayDB<DataType> extends BaseDB<DataType> {
       }
     } catch (error) {
       console.log(error);
+      return undefined;
     }
   }
 

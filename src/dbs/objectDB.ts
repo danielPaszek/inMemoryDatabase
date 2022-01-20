@@ -33,6 +33,7 @@ export class ObjectDB<
         return result;
       }
     }
+    return undefined;
   }
   /**
    * @param id can accept whole item or just id

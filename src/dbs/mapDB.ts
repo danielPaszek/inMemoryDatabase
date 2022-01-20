@@ -3,7 +3,6 @@ import { IObserver, MapMinimalRecord } from "../types";
 
 /**
  * id is stored in db and also is a key!
- *
  * @template DataType extends {id: keyof any} althought symbol is not recommended (because I'm not sure how it works)
  *
  */
