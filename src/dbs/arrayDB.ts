@@ -10,15 +10,21 @@ export class ArrayDB<DataType> extends BaseDB<DataType> {
   /**
    *
    * @param item number will always be treated as INDEX!!!
-   * Otherwise as datatype AND WILL DELETE ALL OF ITS INSTANCES!
    */
   protected _pop(item: DataType) {
-    if (typeof item === "number") {
-      this.db.splice(item, 1);
-    } else {
-      this.db = this.db.filter((el) => el !== item);
+    try {
+      if (typeof item === "number") {
+        const result = this.db.splice(item, 1);
+        return result[0];
+      } else {
+        const result = this.db.splice(this.db.indexOf(item), 1);
+        return result[0];
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
+
   /**
    * @param item it can be index(if you pass number-even if your template is number!) or element(to be used as contains method)
    */

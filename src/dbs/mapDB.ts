@@ -16,15 +16,19 @@ export class MapDB<DataType extends MapMinimalRecord> extends BaseDB<DataType> {
   /**
    * @param id can accept whole item or just id
    */
-  protected _pop(id: keyof any | DataType): void {
+  protected _pop(id: keyof any | DataType) {
     if (
       typeof id === "string" ||
       typeof id === "symbol" ||
       typeof id === "number"
     ) {
+      const result = this.db.get(id);
       this.db.delete(id);
+      return result;
     } else {
+      const result = this.db.get(id.id);
       this.db.delete(id.id);
+      return result;
     }
   }
   /**

@@ -10,8 +10,13 @@ export class BasicTreeDB<
     super(observer);
     this.db = new Tree<DataType>();
   }
+  /**
+   *
+   * @returns always returns undefined
+   */
   protected _pop(item: DataType) {
     this.db.delete(item);
+    return undefined;
   }
   /**
    * shouldn't use get in tree because it doesn't make a lot of sense

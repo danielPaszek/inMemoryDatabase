@@ -23,9 +23,15 @@ export class ObjectDB<
         typeof key === "string" ||
         typeof key === "symbol" ||
         typeof key === "number"
-      )
+      ) {
+        const result = this.db[key];
         delete this.db[key];
-      else delete this.db[key.id];
+        return result;
+      } else {
+        const result = this.db[key.id];
+        delete this.db[key.id];
+        return result;
+      }
     }
   }
   /**

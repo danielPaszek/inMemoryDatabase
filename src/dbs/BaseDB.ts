@@ -23,7 +23,9 @@ export abstract class BaseDB<DataType> {
   push(item: DataType): void {
     try {
       this._push(item);
-      this.pubSub.getPushToDbListeners().publish({ newValue: item });
+      this.pubSub
+        .getPushToDbListeners()
+        .publish({ newValue: item, happenedAt: new Date() });
     } catch (error) {
       console.log(error);
     }
@@ -33,7 +35,9 @@ export abstract class BaseDB<DataType> {
     try {
       const result = this._get(id);
       if (result) {
-        this.pubSub.getGetFromDbListeners().publish({ accessedValue: result });
+        this.pubSub
+          .getGetFromDbListeners()
+          .publish({ accessedValue: result, happenedAt: new Date() });
         return result;
       } else {
         throw new Error("accessed value is undefined");
@@ -47,14 +51,23 @@ export abstract class BaseDB<DataType> {
     this.visit((item) => console.log(item));
   }
   abstract clear(): void;
-  protected abstract _pop(id?: keyof any | DataType): void;
+  protected abstract _pop(id?: keyof any | DataType): DataType | undefined;
   /**
    * @param item pass id when it makes sense :)
    */
-  pop(item: DataType | keyof any): void {
+  pop(item: DataType | keyof any): DataType | undefined {
     try {
-      this._pop(item);
-    } catch (error) {}
+      const result = this._pop(item);
+      if (result) {
+        this.pubSub
+          .getRemoveFromDbListeners()
+          .publish({ removeValue: result, happenedAt: new Date() });
+      } else throw new Error("poped value is undefined");
+      return result;
+    } catch (error) {
+      console.log(error);
+      return undefined;
+    }
   }
   //default observer
   constructor(
