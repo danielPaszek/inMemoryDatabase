@@ -1,6 +1,6 @@
 {
   "name": "pubs-db",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "description": "InMemoryDatabase",
   "main": "lib/index.js",
   "types": "types/index.d.ts",
@@ -14,7 +14,7 @@
     "inMemoryDatabase"
   ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "homepage": "https://github.com/danielPaszek/inMemoryDatabase#readme",
   "repository": {
     "type": "git",

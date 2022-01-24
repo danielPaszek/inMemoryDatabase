@@ -1,5 +1,5 @@
-import { Filter } from "src/utils/filter";
-import { Observer } from "src/utils/observer";
+import { Filter } from "./../utils/filter";
+import { Observer } from "./../utils/observer";
 import { IFilter, IObserver } from "../types";
 
 export abstract class BaseDB<DataType> {

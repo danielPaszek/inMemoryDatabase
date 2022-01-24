@@ -25,6 +25,7 @@ export class Employee {
   public gender: Gender;
   public address: Address;
   public position: Position;
+  public companyEmail?: string;
   constructor(options: IEmployee) {
     this.name = options.name;
     this.surname = options.surname;
