@@ -8,7 +8,7 @@ interface Address {
 type Title = "junior" | "regular" | "senior" | "PM" | "secretary";
 type Department = "IOT" | "cloud" | "webDev" | "maintenance";
 type Position = `${Title}In${Capitalize<Department>}`;
-type Gender = "man" | "woman";
+type Gender = "Male" | "Female";
 
 interface IEmployee {
   name: string;

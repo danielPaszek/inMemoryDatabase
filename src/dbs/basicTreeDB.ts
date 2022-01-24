@@ -6,8 +6,8 @@ export class BasicTreeDB<
   DataType extends TreeMinimalRecord
 > extends BaseDB<DataType> {
   protected db: BinaryTree<DataType>;
-  public constructor(observer?: IObserver<DataType>) {
-    super(observer);
+  public constructor(isDevMode: boolean, observer?: IObserver<DataType>) {
+    super(isDevMode, observer);
     this.db = new Tree<DataType>();
   }
   /**

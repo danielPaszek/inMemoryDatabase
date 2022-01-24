@@ -7,6 +7,7 @@ export abstract class BaseDB<DataType> {
   //e.g with set instead of array
   protected pubSub: IObserver<DataType>;
   protected filter: IFilter<DataType>;
+  protected isDevMode: boolean;
   public getFilter() {
     return this.filter;
   }
@@ -22,12 +23,16 @@ export abstract class BaseDB<DataType> {
   protected abstract _push(item: DataType): void;
   push(item: DataType): void {
     try {
-      this._push(item);
-      this.pubSub
-        .getPushToDbListeners()
-        .publish({ newValue: item, happenedAt: new Date() });
-    } catch (error) {
-      console.log(error);
+      if (!this.filter.isAllowed(item)) {
+        throw new Error("Couldnt pass filter");
+      } else {
+        this._push(item);
+        this.pubSub
+          .getPushToDbListeners()
+          .publish({ newValue: item, happenedAt: new Date() });
+      }
+    } catch (error: any) {
+      if (this.isDevMode) console.log(error.message);
     }
   }
   protected abstract _get(id: keyof any | DataType): DataType | undefined;
@@ -42,8 +47,8 @@ export abstract class BaseDB<DataType> {
       } else {
         throw new Error("accessed value is undefined");
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      if (this.isDevMode) console.log(error.message);
       return undefined;
     }
   }
@@ -64,17 +69,19 @@ export abstract class BaseDB<DataType> {
           .publish({ removeValue: result, happenedAt: new Date() });
       }
       return result;
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      if (this.isDevMode) console.log(error.message);
       return undefined;
     }
   }
   //default observer
   constructor(
+    isDevMode: boolean = false,
     observer: IObserver<DataType> = new Observer<DataType>(),
     filter: IFilter<DataType> = new Filter<DataType>()
   ) {
     this.pubSub = observer;
     this.filter = filter;
+    this.isDevMode = isDevMode;
   }
 }

@@ -35,35 +35,38 @@ const unsubRemoveLog = myDB
 unsubRemoveLog();
 unsubPushLog();
 
+//Also lets store only men
+myDB.getFilter().addFilter((employee) => employee.gender === "Male");
+
 for (let i = 0; i < 50; i++) {
   myDB.push(data[i]);
 }
 console.log("currentCount", currentCount); //50
-unsubCount();
+// unsubCount();
 
 for (let i = 50; i < 100; i++) {
   myDB.push(data[i]);
 }
 console.log("currentCount", currentCount); // still 50
 
-// delete tenth employee :)
+// delete random employee :)
 myDB.pop(10);
 
-for (let i = 1; i < 100; i++) {
-  const temp = myDB.get(i);
+myDB.visit((el) => {
+  const temp = myDB.get(el.id);
   if (temp) {
     temp.companyEmail = `${temp.name}.${temp.surname}@pubs.com`;
     myDB.push(temp);
-  } else {
-    console.log("Couldn't find employee (probably fired recently)", i);
   }
-}
+});
+
 // swap gender of employee and fire him/her :)
 const temp = myDB.get(15);
 if (temp) {
-  temp.gender = temp?.gender == "man" ? "woman" : "man";
+  temp.gender = temp?.gender == "Male" ? "Female" : "Male";
   myDB.push(temp);
 
   // can use temp or temp.id as well because id is required
   myDB.pop(temp.id);
 }
+unsubCount();

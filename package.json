@@ -1,7 +1,7 @@
 {
   "name": "pubs-db",
   "version": "1.1.4",
-  "description": "InMemoryDatabase",
+  "description": "InMemoryDatabase. It implements observer and filtering and more",
   "main": "lib/index.js",
   "types": "types/index.d.ts",
   "scripts": {

@@ -8,8 +8,8 @@ import { IObserver, MapMinimalRecord } from "../types";
  */
 export class MapDB<DataType extends MapMinimalRecord> extends BaseDB<DataType> {
   protected db: Map<keyof any, DataType>;
-  public constructor(observer?: IObserver<DataType>) {
-    super(observer);
+  public constructor(isDevMode: boolean, observer?: IObserver<DataType>) {
+    super(isDevMode, observer);
     this.db = new Map<keyof any, DataType>();
   }
   /**

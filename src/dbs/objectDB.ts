@@ -10,8 +10,8 @@ export class ObjectDB<
   DataType extends MapMinimalRecord
 > extends BaseDB<DataType> {
   protected db: Record<keyof any, DataType>;
-  public constructor(observer?: IObserver<DataType>) {
-    super(observer);
+  public constructor(isDevMode: boolean, observer?: IObserver<DataType>) {
+    super(isDevMode, observer);
     this.db = {};
   }
   /**
@@ -60,7 +60,7 @@ export class ObjectDB<
     try {
       this.db[item.id] = item;
     } catch (error) {
-      throw new Error("push error");
+      throw new Error("_push error");
     }
   }
   visit(cb: (item: DataType) => void): void {
