@@ -5,5 +5,5 @@ export * from "./dbs/basicTreeDB";
 export * from "./dbs/mapDB";
 export * from "./dbs/objectDB";
 export * from "./dbs/treeDB";
-export * from "./utils/observerNext";
+export * from "./utils/observer";
 export * from "./utils/tree";

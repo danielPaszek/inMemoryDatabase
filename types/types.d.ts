@@ -1,12 +1,15 @@
 export declare type Listener<EventType> = (ev: EventType) => void;
 export interface PushEventType<T> {
     newValue: T;
+    happenedAt: Date;
 }
 export interface RemoveEventType<T> {
     removeValue: T;
+    happenedAt: Date;
 }
 export interface GetEventType<T> {
     accessedValue: T;
+    happenedAt: Date;
 }
 export interface MapMinimalRecord {
     id: keyof any;
@@ -45,4 +48,8 @@ export interface IObserver<DataType> {
         subscribe: Subscribe<GetEventType<DataType>>;
         publish: (ev: GetEventType<DataType>) => void;
     };
+}
+export interface IFilter<DataType> {
+    isAllowed(item: DataType): boolean;
+    addFilter(filter: (item: DataType) => boolean): () => void;
 }
