@@ -35,7 +35,4 @@ export class Employee {
     this.address = options.address;
     this.position = options.position;
   }
-  valueOf(): number {
-    return this.id;
-  }
 }

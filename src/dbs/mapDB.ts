@@ -21,11 +21,17 @@ export class MapDB<DataType extends MapMinimalRecord> extends BaseDB<DataType> {
       typeof id === "symbol" ||
       typeof id === "number"
     ) {
-      const result = this.db.get(id);
+      let result = this.db.get(id);
+      if (result) {
+        result = { ...result } as DataType;
+      }
       this.db.delete(id);
       return result;
     } else {
-      const result = this.db.get(id.id);
+      let result = this.db.get(id.id);
+      if (result) {
+        result = { ...result } as DataType;
+      }
       this.db.delete(id.id);
       return result;
     }

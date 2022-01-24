@@ -62,7 +62,7 @@ export abstract class BaseDB<DataType> {
         this.pubSub
           .getRemoveFromDbListeners()
           .publish({ removeValue: result, happenedAt: new Date() });
-      } else throw new Error("poped value is undefined");
+      }
       return result;
     } catch (error) {
       console.log(error);

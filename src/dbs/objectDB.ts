@@ -24,11 +24,17 @@ export class ObjectDB<
         typeof key === "symbol" ||
         typeof key === "number"
       ) {
-        const result = this.db[key];
+        let result = this.db[key];
+        if (result) {
+          result = { ...result };
+        }
         delete this.db[key];
         return result;
       } else {
-        const result = this.db[key.id];
+        let result = this.db[key.id];
+        if (result) {
+          result = { ...result } as DataType;
+        }
         delete this.db[key.id];
         return result;
       }
