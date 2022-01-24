@@ -1,6 +1,9 @@
 # pubs-db
 
-It is an in memory database system package, that allows you to manage state for node.js. We support few data structures like Tree, Map, Array and Object.
+It is an in memory database system package, that allows you to manage state for node.js.
+It can replace redis in small projects where you need RAM database.
+It has easy to use observer to monitor chaanges in your db.
+We support few data structures like Tree, Map, Array and Object.
 
 # Getting started
 
