@@ -1,5 +1,5 @@
 import { BaseDB } from "./BaseDB";
-import { IObserver, MapMinimalRecord } from "../types";
+import { IFilter, IObserver, MapMinimalRecord } from "../types";
 
 /**
  * id is stored in db and also is a key!
@@ -8,8 +8,12 @@ import { IObserver, MapMinimalRecord } from "../types";
  */
 export class MapDB<DataType extends MapMinimalRecord> extends BaseDB<DataType> {
   protected db: Map<keyof any, DataType>;
-  public constructor(isDevMode: boolean, observer?: IObserver<DataType>) {
-    super(isDevMode, observer);
+  public constructor(
+    isDevMode: boolean,
+    observer?: IObserver<DataType>,
+    filter?: IFilter<DataType>
+  ) {
+    super(isDevMode, observer, filter);
     this.db = new Map<keyof any, DataType>();
   }
   /**

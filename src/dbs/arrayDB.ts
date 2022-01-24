@@ -1,10 +1,14 @@
-import { IObserver } from "../types";
+import { IFilter, IObserver } from "../types";
 import { BaseDB } from "./BaseDB";
 
 export class ArrayDB<DataType> extends BaseDB<DataType> {
   protected db: DataType[];
-  public constructor(isDevMode: boolean, observer?: IObserver<DataType>) {
-    super(isDevMode, observer);
+  public constructor(
+    isDevMode: boolean,
+    observer?: IObserver<DataType>,
+    filter?: IFilter<DataType>
+  ) {
+    super(isDevMode, observer, filter);
     this.db = [];
   }
 
