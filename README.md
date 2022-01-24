@@ -50,3 +50,8 @@ const  unsubscribe = myDB.subscribe().PushToDbListeners(({ newValue }) =>  conso
 // .....
 unsubscribe();
 ```
+TODO:
+-add async support(adding data asynchronously and async listeners!)
+-and possibility of connection to pscale and mongodb to do incremental backups
+-change map and object to not store id???(another shit with changing templates)
+-create handlers( need to change template to in and stored T also based on some function interface or something). Pretty difficult to do it correctly.
