@@ -3,7 +3,6 @@ import { IObserver, MapMinimalRecord } from "../types";
 
 /**
  * id is stored in db and also is a key!
- *
  * @template DataType extends {id: keyof any} althought symbol is not recommended (because I'm not sure how it works)
  *
  */
@@ -16,21 +15,25 @@ export class MapDB<DataType extends MapMinimalRecord> extends BaseDB<DataType> {
   /**
    * @param id can accept whole item or just id
    */
-  pop(id: keyof any | DataType): void {
+  protected _pop(id: keyof any | DataType) {
     if (
       typeof id === "string" ||
       typeof id === "symbol" ||
       typeof id === "number"
     ) {
+      const result = this.db.get(id);
       this.db.delete(id);
+      return result;
     } else {
+      const result = this.db.get(id.id);
       this.db.delete(id.id);
+      return result;
     }
   }
   /**
    * @param id can accept whole item or just id
    */
-  get(id?: keyof any | DataType): DataType | undefined {
+  protected _get(id?: keyof any | DataType): DataType | undefined {
     if (id) {
       if (
         typeof id === "string" ||
@@ -42,17 +45,12 @@ export class MapDB<DataType extends MapMinimalRecord> extends BaseDB<DataType> {
     }
     return undefined;
   }
-  push(item: DataType): void {
-    this.pubSub.getBeforeAddToDbListeners().publish({
-      newValue: item,
-      value: this.get(item.id),
-    });
+  protected _push(item: DataType): void {
     try {
       this.db.set(item.id, item);
     } catch (error) {
-      throw new Error("push error");
+      throw new Error("_push error");
     }
-    this.pubSub.getAfterAddToDbListeners().publish({ newValue: item });
   }
   visit(cb: (item: DataType) => void): void {
     this.db.forEach((el) => cb(el));

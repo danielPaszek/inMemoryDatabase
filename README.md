@@ -2,9 +2,6 @@
 
 It is an in memory database system package, that allows you to manage state for node.js. We support few data structures like Tree, Map, Array and Object.
 
-### For PO project
-Check src and examples folders. Lib and types are generated and they are published to npmjs.com
-
 # Getting started
 
 install via npm
@@ -27,8 +24,9 @@ Some of our structures require specific data type (e.g. Map requires id in your 
 ```
 interface BasicDB<DataType> {
 	subscribe():  {
-		AddBeforeAddToDb: Subscribe<BeforeEventType<DataType>>
-		AddAfterAddToDb: Subscribe<AfterEventType<DataType>>
+		PushToDbListeners: Subscribe<PushEventType<DataType>>
+		RemoveFromDbListeners: Subscribe<RemoveEventType<DataType>>
+		GetFromDbListeners: Subscribe<GetEventType<DataType>>
 	}
 	visit(cb: (item: DataType) => void): void
 	push(item: DataType): void
@@ -42,17 +40,10 @@ Of course dbs implement keyof any where it makes sense
 ### Observer
 
 Every structure has pub sub design pattern implemented. Unsubscribe function is return (similar to useEffect).
-We support listeners activating before or after adding element to db. To add listener pass it as argument
-
-You can create your own observer that implements IObserver<T> interface and pass it as an argument to replace default.
+You can choose when you want to activate your listeners (after push, after pop or after get).
 
 ```
-const  unsubscribe = myDB.subscribe().AddAfterAddToDb(({ newValue }) =>  console.log(newValue));
-const  unsubscribe2 = myDB.subscribe().AddBeforeAddToDb(({ newValue, value }) => {
-	console.log(`newValue:${newValue}  \n value:${value}`)
-}
-);
+const  unsubscribe = myDB.subscribe().PushToDbListeners(({ newValue }) =>  console.log(newValue));
 // .....
 unsubscribe();
-unsubscribe2();
 ```

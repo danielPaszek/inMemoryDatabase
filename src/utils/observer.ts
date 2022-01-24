@@ -1,21 +1,27 @@
 import {
-  AfterEventType,
-  BeforeEventType,
+  GetEventType,
   IObserver,
   Listener,
+  PushEventType,
+  RemoveEventType,
   Subscribe,
 } from "../types";
 
 export class Observer<DataType> implements IObserver<DataType> {
-  private beforeAddToDbListeners =
-    this.createObserver<BeforeEventType<DataType>>();
-  private afterAddToDbListeners =
-    this.createObserver<AfterEventType<DataType>>();
-  public getBeforeAddToDbListeners() {
-    return this.beforeAddToDbListeners;
+  //get only new value
+  private PushToDbListeners = this.createObserver<PushEventType<DataType>>();
+  private RemoveFromDbListeners =
+    this.createObserver<RemoveEventType<DataType>>();
+  private GetFromDbListeners = this.createObserver<GetEventType<DataType>>();
+
+  public getPushToDbListeners() {
+    return this.PushToDbListeners;
   }
-  public getAfterAddToDbListeners() {
-    return this.afterAddToDbListeners;
+  public getRemoveFromDbListeners() {
+    return this.RemoveFromDbListeners;
+  }
+  public getGetFromDbListeners() {
+    return this.GetFromDbListeners;
   }
   private createObserver<EventType>(): {
     // subscribe returns unsubscribe function(like useEffect())
