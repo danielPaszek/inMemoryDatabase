@@ -19,6 +19,7 @@ const subCount = () => {
     unsubCount1();
   };
 };
+const unsubCount = subCount();
 
 const unsubPushLog = myDB
   .subscribe()
@@ -33,8 +34,7 @@ const unsubRemoveLog = myDB
 // to not spam the console
 unsubRemoveLog();
 unsubPushLog();
-//
-const unsubCount = subCount();
+
 for (let i = 0; i < 50; i++) {
   myDB.push(data[i]);
 }
@@ -46,6 +46,7 @@ for (let i = 50; i < 100; i++) {
 }
 console.log("currentCount", currentCount); // still 50
 
+// delete tenth employee :)
 myDB.pop(10);
 
 for (let i = 1; i < 100; i++) {

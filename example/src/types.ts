@@ -1,3 +1,5 @@
+// fun with typescript types
+
 interface Address {
   street: string;
   house: number;
