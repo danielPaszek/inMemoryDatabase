@@ -20,13 +20,13 @@ export abstract class BaseDB<DataType> {
     };
   }
   abstract visit(cb: (item: DataType) => void): void;
-  protected abstract _push(item: DataType): void;
-  push(item: DataType): void {
+  protected abstract _push(item: DataType, key?: keyof any): void;
+  push(item: DataType, key?: keyof any): void {
     try {
       if (!this.filter.isAllowed(item)) {
-        throw new Error("Couldnt pass filter");
+        throw new Error("Couldn't pass filter");
       } else {
-        this._push(item);
+        this._push(item, key);
         this.pubSub
           .getPushToDbListeners()
           .publish({ newValue: item, happenedAt: new Date() });
@@ -56,13 +56,13 @@ export abstract class BaseDB<DataType> {
     this.visit((item) => console.log(item));
   }
   abstract clear(): void;
-  protected abstract _pop(id?: keyof any | DataType): DataType | undefined;
+  protected abstract _remove(id?: keyof any | DataType): DataType | undefined;
   /**
    * @param item pass id when it makes sense :)
    */
-  pop(item: DataType | keyof any): DataType | undefined {
+  remove(item: DataType | keyof any): DataType | undefined {
     try {
-      const result = this._pop(item);
+      const result = this._remove(item);
       if (result) {
         this.pubSub
           .getRemoveFromDbListeners()
@@ -71,12 +71,12 @@ export abstract class BaseDB<DataType> {
       return result;
     } catch (error: any) {
       if (this.isDevMode) console.log(error.message);
-      return undefined;
+      return;
     }
   }
   //default observer
   constructor(
-    isDevMode: boolean = false,
+    isDevMode: boolean,
     observer: IObserver<DataType> = new Observer<DataType>(),
     filter: IFilter<DataType> = new Filter<DataType>()
   ) {

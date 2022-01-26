@@ -1,4 +1,4 @@
-import { TreeMinimalRecord } from "../types";
+import { IFilter, IObserver, TreeMinimalRecord } from "../types";
 import { BasicTreeDB } from "./basicTreeDB";
 /**
  * @template DataType require valuOf(): number | string to evaluate object
@@ -24,5 +24,12 @@ export class TreeDB<
   }
   contains(item: DataType) {
     return this.db.contains(item);
+  }
+  public constructor(
+    isDevMode: boolean,
+    observer?: IObserver<DataType>,
+    filter?: IFilter<DataType>
+  ) {
+    super(isDevMode, observer, filter);
   }
 }

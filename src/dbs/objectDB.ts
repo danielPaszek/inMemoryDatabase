@@ -1,10 +1,11 @@
 import { BaseDB } from "./BaseDB";
 import { IFilter, IObserver, MapMinimalRecord } from "../types";
+import cloneDeep from "lodash.clonedeep";
 
 /**
  * id is stored in db and also is a key!
- * @template DataType extends {id: keyof any} althought
- * symbol is converted to string
+ * if you don't want this mechanic use mapDB!
+ * @template DataType extends {id: keyof any}
  */
 export class ObjectDB<
   DataType extends MapMinimalRecord
@@ -19,25 +20,27 @@ export class ObjectDB<
     this.db = {};
   }
   /**
-   * @param id can accept whole item or just id
+   * @param id can extract id from item or you can just pass id
    */
-  protected _pop(key: keyof any | DataType) {
+  protected _remove(key: keyof any | DataType) {
     if (key) {
       if (
         typeof key === "string" ||
         typeof key === "symbol" ||
         typeof key === "number"
       ) {
-        let result = this.db[key];
-        if (result) {
-          result = { ...result };
+        let result: DataType | undefined;
+        let temp = this.db[key];
+        if (temp) {
+          result = cloneDeep(temp);
         }
         delete this.db[key];
         return result;
       } else {
-        let result = this.db[key.id];
-        if (result) {
-          result = { ...result } as DataType;
+        let result: DataType | undefined;
+        let temp = this.db[key.id];
+        if (temp) {
+          result = cloneDeep(temp);
         }
         delete this.db[key.id];
         return result;
@@ -55,14 +58,16 @@ export class ObjectDB<
         typeof id === "symbol" ||
         typeof id === "number"
       )
-        return this.db[id];
-      else return this.db[id.id];
+        return cloneDeep(this.db[id]);
+      else return cloneDeep(this.db[id.id]);
     }
     return undefined;
   }
-  protected _push(item: DataType): void {
+  protected _push(item: DataType, key: keyof any): void {
     try {
-      this.db[item.id] = item;
+      if (typeof key !== "undefined") {
+        this.db[key] = cloneDeep(item);
+      } else this.db[item.id] = cloneDeep(item);
     } catch (error) {
       throw new Error("_push error");
     }
