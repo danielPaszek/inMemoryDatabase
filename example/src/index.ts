@@ -1,4 +1,4 @@
-import { ArrayDB } from "pubs-db";
+import { MapDB } from "pubs-db";
 import { Employee } from "./types";
 import * as fs from "fs";
 import * as path from "path";
@@ -6,7 +6,7 @@ import * as path from "path";
 const data: Employee[] = JSON.parse(
   fs.readFileSync(path.join(__dirname, "../MOCK_DATA.json")).toString()
 );
-const myDB = new ArrayDB<Employee>();
+const myDB = new MapDB<Employee>(false);
 let currentCount = 0;
 
 const subCount = () => {
@@ -20,7 +20,7 @@ const subCount = () => {
   };
 };
 const unsubCount = subCount();
-
+unsubCount();
 const unsubPushLog = myDB
   .subscribe()
   .PushToDbListeners(({ newValue }) => console.log("Added:", newValue));
@@ -39,25 +39,22 @@ unsubPushLog();
 myDB.getFilter().addFilter((employee) => employee.gender === "Male");
 
 for (let i = 0; i < 50; i++) {
-  myDB.push(data[i]);
+  myDB.push(data[i], i);
 }
-console.log("currentCount", currentCount); //50
-// unsubCount();
 
 for (let i = 50; i < 100; i++) {
-  myDB.push(data[i]);
+  myDB.push(data[i], i);
 }
-console.log("currentCount", currentCount); // still 50
 
 // delete random employee :)
-myDB.pop(10);
-
+myDB.remove(Math.floor(Math.random() * 100));
 myDB.visit((el) => {
   const temp = myDB.get(el.id);
   if (temp) {
     temp.companyEmail = `${temp.name}.${temp.surname}@pubs.com`;
     myDB.push(temp);
   }
+  // console.log(el);
 });
 
 // swap gender of employee and fire him/her :)
@@ -65,8 +62,5 @@ const temp = myDB.get(15);
 if (temp) {
   temp.gender = temp?.gender == "Male" ? "Female" : "Male";
   myDB.push(temp);
-
-  // can use temp or temp.id as well because id is required
-  myDB.pop(temp.id);
 }
 unsubCount();

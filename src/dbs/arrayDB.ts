@@ -1,5 +1,6 @@
 import { IFilter, IObserver } from "../types";
 import { BaseDB } from "./BaseDB";
+import cloneDeep from "lodash.clonedeep";
 
 export class ArrayDB<DataType> extends BaseDB<DataType> {
   protected db: DataType[];
@@ -14,20 +15,22 @@ export class ArrayDB<DataType> extends BaseDB<DataType> {
 
   /**
    *
-   * @param item number will always be treated as INDEX!!!
+   * @param id number will always be treated as INDEX!!!
    */
-  protected _pop(item: DataType) {
+  protected _remove(
+    id: string | number | symbol | DataType
+  ): DataType | undefined {
     try {
-      if (typeof item === "number") {
-        const result = this.db.splice(item, 1);
+      if (typeof id === "number") {
+        const result = this.db.splice(id, 1);
         return result[0];
-      } else {
-        const result = this.db.splice(this.db.indexOf(item), 1);
+      } else if (typeof id === typeof this.db[0]) {
+        const result = this.db.splice(this.db.indexOf(id as DataType), 1);
         return result[0];
       }
-    } catch (error) {
-      console.log(error);
       return undefined;
+    } catch (error) {
+      throw new Error("_remove error");
     }
   }
 
@@ -37,18 +40,18 @@ export class ArrayDB<DataType> extends BaseDB<DataType> {
   protected _get(item: keyof any | DataType): DataType | undefined {
     try {
       if (typeof item === "number") {
-        return this.db[item];
+        return cloneDeep(this.db[item]);
       } else {
-        return this.db.find((el) => el === item);
+        return cloneDeep(this.db.find((el) => el === item));
       }
     } catch (error) {
-      return undefined;
+      throw new Error("_get error");
     }
   }
 
   protected _push(item: DataType): void {
     try {
-      this.db.push(item);
+      this.db.push(cloneDeep(item));
     } catch (error) {
       throw new Error("_push error");
     }

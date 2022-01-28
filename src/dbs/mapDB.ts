@@ -1,12 +1,13 @@
 import { BaseDB } from "./BaseDB";
-import { IFilter, IObserver, MapMinimalRecord } from "../types";
+import { IFilter, IObserver } from "../types";
+import cloneDeep from "lodash.clonedeep";
 
 /**
  * id is stored in db and also is a key!
  * @template DataType extends {id: keyof any} althought symbol is not recommended (because I'm not sure how it works)
  *
  */
-export class MapDB<DataType extends MapMinimalRecord> extends BaseDB<DataType> {
+export class MapDB<DataType> extends BaseDB<DataType> {
   protected db: Map<keyof any, DataType>;
   public constructor(
     isDevMode: boolean,
@@ -15,49 +16,31 @@ export class MapDB<DataType extends MapMinimalRecord> extends BaseDB<DataType> {
   ) {
     super(isDevMode, observer, filter);
     this.db = new Map<keyof any, DataType>();
+    this.db.get(1);
+  }
+  /**
+   * @param key pass only a key
+   */
+  protected _remove(key: keyof any) {
+    let result: DataType | undefined;
+    let temp = this.db.get(key);
+    console.log(temp);
+    if (temp) {
+      result = cloneDeep(temp);
+    } else result = undefined;
+    this.db.delete(key);
+    return result;
   }
   /**
    * @param id can accept whole item or just id
    */
-  protected _pop(id: keyof any | DataType) {
-    if (
-      typeof id === "string" ||
-      typeof id === "symbol" ||
-      typeof id === "number"
-    ) {
-      let result = this.db.get(id);
-      if (result) {
-        result = { ...result } as DataType;
-      }
-      this.db.delete(id);
-      return result;
-    } else {
-      let result = this.db.get(id.id);
-      if (result) {
-        result = { ...result } as DataType;
-      }
-      this.db.delete(id.id);
-      return result;
-    }
+  protected _get(id: keyof any): DataType | undefined {
+    return cloneDeep(this.db.get(id));
   }
-  /**
-   * @param id can accept whole item or just id
-   */
-  protected _get(id?: keyof any | DataType): DataType | undefined {
-    if (id) {
-      if (
-        typeof id === "string" ||
-        typeof id === "symbol" ||
-        typeof id === "number"
-      )
-        return this.db.get(id);
-      else return this.db.get(id.id);
-    }
-    return undefined;
-  }
-  protected _push(item: DataType): void {
+
+  protected _push(value: DataType, key: keyof any): void {
     try {
-      this.db.set(item.id, item);
+      this.db.set(key, cloneDeep(value));
     } catch (error) {
       throw new Error("_push error");
     }

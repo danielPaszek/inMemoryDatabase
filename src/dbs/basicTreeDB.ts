@@ -1,6 +1,7 @@
 import { BaseDB } from "./BaseDB";
 import { BinaryTree, IFilter, IObserver, TreeMinimalRecord } from "../types";
 import { Tree } from "../utils/tree";
+import cloneDeep from "lodash.clonedeep";
 
 export class BasicTreeDB<
   DataType extends TreeMinimalRecord
@@ -16,15 +17,17 @@ export class BasicTreeDB<
   }
   /**
    *
-   * @returns always returns undefined
+   * @param item pass only a value
+   * @returns always returns undefined!
    */
-  protected _pop(item: DataType) {
+
+  protected _remove(item: DataType) {
     this.db.delete(item);
     return undefined;
   }
   /**
    * shouldn't use get in tree because it doesn't make a lot of sense
-   * use contains instead
+   * use contains instead!
    * @returns root value for now
    */
   protected _get(): DataType | undefined {
@@ -33,7 +36,7 @@ export class BasicTreeDB<
   }
   protected _push(item: DataType): void {
     try {
-      this.db.insert(item);
+      this.db.insert(cloneDeep(item));
     } catch (error) {
       throw new Error("_push error");
     }
