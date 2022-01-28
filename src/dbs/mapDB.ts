@@ -24,7 +24,6 @@ export class MapDB<DataType> extends BaseDB<DataType> {
   protected _remove(key: keyof any) {
     let result: DataType | undefined;
     let temp = this.db.get(key);
-    console.log(temp);
     if (temp) {
       result = cloneDeep(temp);
     } else result = undefined;
