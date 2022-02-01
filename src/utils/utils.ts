@@ -5,3 +5,10 @@ export function compareDeepArrayIndex(array: Array<any>, item: any): number {
   }
   return -1;
 }
+
+// try decorator
+// export function dbAPI() {
+//   return function(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+
+//   }
+// }

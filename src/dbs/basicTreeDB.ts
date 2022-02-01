@@ -1,5 +1,5 @@
 import { BaseDB } from "./BaseDB";
-import { BinaryTree, IFilter, IObserver, TreeMinimalRecord } from "../types";
+import { BinaryTree, TreeMinimalRecord } from "../types";
 import { Tree } from "../utils/tree";
 import cloneDeep from "lodash.clonedeep";
 

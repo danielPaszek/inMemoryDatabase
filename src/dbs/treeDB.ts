@@ -1,4 +1,4 @@
-import { IFilter, IObserver, TreeMinimalRecord } from "../types";
+import { TreeMinimalRecord } from "../types";
 import { BasicTreeDB } from "./basicTreeDB";
 /**
  * @template DataType require valuOf(): number | string to evaluate object

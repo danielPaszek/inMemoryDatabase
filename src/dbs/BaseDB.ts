@@ -11,7 +11,6 @@ export abstract class BaseDB<DataType> {
   public getFilter() {
     return this.filter;
   }
-
   public subscribe() {
     return {
       PushToDbListeners: this.pubSub.getPushToDbListeners().subscribe,

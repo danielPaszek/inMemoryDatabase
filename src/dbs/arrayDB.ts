@@ -1,4 +1,3 @@
-import { IFilter, IObserver } from "../types";
 import { BaseDB } from "./BaseDB";
 import cloneDeep from "lodash.clonedeep";
 import isEqual from "lodash.isequal";
@@ -47,7 +46,7 @@ export class ArrayDB<DataType> extends BaseDB<DataType> {
   }
 
   /**
-   * @param props pass only an item and it will be treated as contain
+   * @param props pass an item and it will behave like contain()
    */
   public get(props: { item: DataType }): DataType | undefined;
   public get(props: { index: number }): DataType | undefined;

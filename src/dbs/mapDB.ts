@@ -1,5 +1,4 @@
 import { BaseDB } from "./BaseDB";
-import { IFilter, IObserver } from "../types";
 import cloneDeep from "lodash.clonedeep";
 
 interface removeProps {

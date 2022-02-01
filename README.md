@@ -4,3 +4,4 @@ TODO:
 [x] array requires only one of the parameters
 [x] find and add real compare function
 [x] optional date in listener
+[ ] try to switch to decorators
