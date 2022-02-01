@@ -2,6 +2,17 @@ import { IFilter, IObserver } from "../types";
 import { BaseDB } from "./BaseDB";
 import cloneDeep from "lodash.clonedeep";
 
+interface arrayProps<T> {
+  item?: T;
+  index?: number;
+}
+
+// type lol<T> = T extends { item: number }
+//   ? arrayProps<number>
+//   : T extends { index: number }
+//   ? arrayProps<number>
+//   : Required<arrayProps<number>>;
+
 export class ArrayDB<DataType> extends BaseDB<DataType> {
   protected db: DataType[];
   public constructor(
@@ -12,48 +23,69 @@ export class ArrayDB<DataType> extends BaseDB<DataType> {
     super(isDevMode, observer, filter);
     this.db = [];
   }
-
-  /**
-   *
-   * @param id number will always be treated as INDEX!!!
-   */
-  protected _remove(
-    id: string | number | symbol | DataType
-  ): DataType | undefined {
+  // shows error when neither field is passed and when both are passed. Nice
+  public remove(props: { item: DataType }): DataType | undefined;
+  public remove(props: { index: number }): DataType | undefined;
+  public remove(props: arrayProps<DataType>): DataType | undefined {
+    let result: DataType;
     try {
-      if (typeof id === "number") {
-        const result = this.db.splice(id, 1);
-        return result[0];
-      } else if (typeof id === typeof this.db[0]) {
-        const result = this.db.splice(this.db.indexOf(id as DataType), 1);
-        return result[0];
+      if (props.index !== undefined) {
+        result = this.db.splice(props.index, 1)[0];
+      } else if (props.item !== undefined) {
+        result = this.db.splice(this.db.indexOf(props.item), 1)[0];
+      } else return;
+      if (result !== undefined) {
+        this.pubSub
+          .getRemoveFromDbListeners()
+          .publish({ removeValue: result, happenedAt: new Date() });
       }
-      return undefined;
-    } catch (error) {
-      throw new Error("_remove error");
+      return result;
+    } catch (error: any) {
+      if (this.isDevMode) console.log(error.message);
+      return;
     }
   }
 
   /**
-   * @param item it can be index(if you pass number-even if your template is number!) or element(to be used as contains method)
+   * @param props pass only an item and it will be treated as contain
    */
-  protected _get(item: keyof any | DataType): DataType | undefined {
+  public get(props: { item: DataType }): DataType | undefined;
+  public get(props: { index: number }): DataType | undefined;
+  public get(props: arrayProps<DataType>): DataType | undefined {
+    let result: DataType | undefined;
     try {
-      if (typeof item === "number") {
-        return cloneDeep(this.db[item]);
-      } else {
-        return cloneDeep(this.db.find((el) => el === item));
+      if (props.index !== undefined) {
+        result = cloneDeep(this.db[props.index]);
+      } else if (props.item !== undefined) {
+        result = cloneDeep(this.db.find((el) => el === props.item));
+      } else return;
+      if (result !== undefined) {
+        this.pubSub
+          .getGetFromDbListeners()
+          .publish({ accessedValue: result, happenedAt: new Date() });
       }
-    } catch (error) {
-      throw new Error("_get error");
+      return result;
+    } catch (error: any) {
+      if (this.isDevMode) console.log(error.message);
+      return;
     }
   }
-
-  protected _push(item: DataType): void {
+  public push(props: { item: DataType }): void;
+  public push(props: { index: number }): void;
+  public push(props: arrayProps<DataType>): void {
     try {
-      this.db.push(cloneDeep(item));
-    } catch (error) {
-      throw new Error("_push error");
+      if (props.item === undefined) return;
+      if (!this.filter.isAllowed(props.item)) {
+        throw new Error("Couldn't pass filter");
+      }
+      if (props.index !== undefined) {
+        this.db[props.index] = cloneDeep(props.item);
+      } else this.db.push(cloneDeep(props.item));
+      this.pubSub
+        .getPushToDbListeners()
+        .publish({ newValue: props.item, happenedAt: new Date() });
+    } catch (error: any) {
+      if (this.isDevMode) console.log(error.message);
     }
   }
   visit(cb: (item: DataType) => void): void {

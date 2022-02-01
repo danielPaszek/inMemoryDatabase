@@ -2,11 +2,14 @@ import { BaseDB } from "./BaseDB";
 import { IFilter, IObserver } from "../types";
 import cloneDeep from "lodash.clonedeep";
 
-/**
- * id is stored in db and also is a key!
- * @template DataType extends {id: keyof any} althought symbol is not recommended (because I'm not sure how it works)
- *
- */
+interface removeProps {
+  key: keyof any;
+  disableReturn?: boolean;
+}
+interface pushProps<T> {
+  item: T;
+  key: keyof any;
+}
 export class MapDB<DataType> extends BaseDB<DataType> {
   protected db: Map<keyof any, DataType>;
   public constructor(
@@ -19,29 +22,61 @@ export class MapDB<DataType> extends BaseDB<DataType> {
     this.db.get(1);
   }
   /**
-   * @param key pass only a key
+   *
+   * @param props
+   * @returns
    */
-  protected _remove(key: keyof any) {
+  public remove(props: removeProps): DataType | undefined {
     let result: DataType | undefined;
-    let temp = this.db.get(key);
-    if (temp) {
-      result = cloneDeep(temp);
-    } else result = undefined;
-    this.db.delete(key);
+    try {
+      if (!props.disableReturn) {
+        let temp = this.db.get(props.key);
+        if (temp) {
+          result = cloneDeep(temp);
+        }
+      }
+      this.db.delete(props.key);
+      if (result !== undefined) {
+        this.pubSub
+          .getRemoveFromDbListeners()
+          .publish({ removeValue: result, happenedAt: new Date() });
+      }
+    } catch (error: any) {
+      if (this.isDevMode) console.log(error.message);
+      return;
+    }
     return result;
   }
-  /**
-   * @param id can accept whole item or just id
-   */
-  protected _get(id: keyof any): DataType | undefined {
-    return cloneDeep(this.db.get(id));
+
+  public get(key: keyof any): DataType | undefined {
+    let result: DataType | undefined;
+    try {
+      result = cloneDeep(this.db.get(key));
+      if (result !== undefined) {
+        this.pubSub
+          .getGetFromDbListeners()
+          .publish({ accessedValue: result, happenedAt: new Date() });
+      }
+      return result;
+    } catch (error: any) {
+      if (this.isDevMode) console.log(error.message);
+      return;
+    }
   }
 
-  protected _push(value: DataType, key: keyof any): void {
+  public push(props: pushProps<DataType>): void {
     try {
-      this.db.set(key, cloneDeep(value));
-    } catch (error) {
-      throw new Error("_push error");
+      if (props.item === undefined) return;
+      if (!this.filter.isAllowed(props.item)) {
+        throw new Error("Couldn't pass filter");
+      }
+      this.db.set(props.key, cloneDeep(props.item));
+      this.pubSub
+        .getPushToDbListeners()
+        .publish({ newValue: props.item, happenedAt: new Date() });
+    } catch (error: any) {
+      if (this.isDevMode) console.log(error.message);
+      return;
     }
   }
   visit(cb: (item: DataType) => void): void {

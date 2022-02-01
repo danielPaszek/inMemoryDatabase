@@ -2,15 +2,15 @@ export type Listener<EventType> = (ev: EventType) => void;
 
 export interface PushEventType<T> {
   newValue: T;
-  happenedAt: Date;
+  happenedAt?: Date;
 }
 export interface RemoveEventType<T> {
   removeValue: T;
-  happenedAt: Date;
+  happenedAt?: Date;
 }
 export interface GetEventType<T> {
   accessedValue: T;
-  happenedAt: Date;
+  happenedAt?: Date;
 }
 //checks if it has id
 export interface MapMinimalRecord {

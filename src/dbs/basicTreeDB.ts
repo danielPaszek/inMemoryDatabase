@@ -16,29 +16,32 @@ export class BasicTreeDB<
     this.db = new Tree<DataType>();
   }
   /**
-   *
-   * @param item pass only a value
-   * @returns always returns undefined!
+   * @returns always returns void!
    */
 
-  protected _remove(item: DataType) {
-    this.db.delete(item);
-    return undefined;
-  }
-  /**
-   * shouldn't use get in tree because it doesn't make a lot of sense
-   * use contains instead!
-   * @returns root value for now
-   */
-  protected _get(): DataType | undefined {
-    return this.db.getRoot()?.value;
-    // to use id
-  }
-  protected _push(item: DataType): void {
+  public remove(item: DataType) {
     try {
+      this.db.delete(item);
+      this.pubSub
+        .getRemoveFromDbListeners()
+        .publish({ removeValue: item, happenedAt: new Date() });
+    } catch (error: any) {
+      if (this.isDevMode) console.log(error.message);
+      return;
+    }
+  }
+
+  public push(item: DataType): void {
+    try {
+      if (!this.filter.isAllowed(item)) {
+        throw new Error("Couldn't pass filter");
+      }
       this.db.insert(cloneDeep(item));
-    } catch (error) {
-      throw new Error("_push error");
+      this.pubSub
+        .getPushToDbListeners()
+        .publish({ newValue: item, happenedAt: new Date() });
+    } catch (error: any) {
+      if (this.isDevMode) console.log(error.message);
     }
   }
   visit(cb: (item: DataType) => void): void {
