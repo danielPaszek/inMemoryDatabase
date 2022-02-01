@@ -1,6 +1,8 @@
 import { IFilter, IObserver } from "../types";
 import { BaseDB } from "./BaseDB";
 import cloneDeep from "lodash.clonedeep";
+import isEqual from "lodash.isequal";
+import { compareDeepArrayIndex } from "../utils/utils";
 
 interface arrayProps<T> {
   item?: T;
@@ -15,12 +17,8 @@ interface arrayProps<T> {
 
 export class ArrayDB<DataType> extends BaseDB<DataType> {
   protected db: DataType[];
-  public constructor(
-    isDevMode: boolean,
-    observer?: IObserver<DataType>,
-    filter?: IFilter<DataType>
-  ) {
-    super(isDevMode, observer, filter);
+  public constructor(isDevMode: boolean, logDate?: boolean) {
+    super(isDevMode, logDate);
     this.db = [];
   }
   // shows error when neither field is passed and when both are passed. Nice
@@ -32,12 +30,14 @@ export class ArrayDB<DataType> extends BaseDB<DataType> {
       if (props.index !== undefined) {
         result = this.db.splice(props.index, 1)[0];
       } else if (props.item !== undefined) {
-        result = this.db.splice(this.db.indexOf(props.item), 1)[0];
+        //TODO
+        result = this.db.splice(
+          compareDeepArrayIndex(this.db, props.item),
+          1
+        )[0];
       } else return;
       if (result !== undefined) {
-        this.pubSub
-          .getRemoveFromDbListeners()
-          .publish({ removeValue: result, happenedAt: new Date() });
+        this.pubSub.getRemoveFromDbListeners().publish({ removeValue: result });
       }
       return result;
     } catch (error: any) {
@@ -57,12 +57,10 @@ export class ArrayDB<DataType> extends BaseDB<DataType> {
       if (props.index !== undefined) {
         result = cloneDeep(this.db[props.index]);
       } else if (props.item !== undefined) {
-        result = cloneDeep(this.db.find((el) => el === props.item));
+        result = cloneDeep(this.db.find((el) => isEqual(el, props.item)));
       } else return;
       if (result !== undefined) {
-        this.pubSub
-          .getGetFromDbListeners()
-          .publish({ accessedValue: result, happenedAt: new Date() });
+        this.pubSub.getGetFromDbListeners().publish({ accessedValue: result });
       }
       return result;
     } catch (error: any) {
@@ -81,9 +79,7 @@ export class ArrayDB<DataType> extends BaseDB<DataType> {
       if (props.index !== undefined) {
         this.db[props.index] = cloneDeep(props.item);
       } else this.db.push(cloneDeep(props.item));
-      this.pubSub
-        .getPushToDbListeners()
-        .publish({ newValue: props.item, happenedAt: new Date() });
+      this.pubSub.getPushToDbListeners().publish({ newValue: props.item });
     } catch (error: any) {
       if (this.isDevMode) console.log(error.message);
     }

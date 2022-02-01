@@ -8,6 +8,7 @@ import {
 } from "../types";
 
 export class Observer<DataType> implements IObserver<DataType> {
+  private logDate: boolean;
   //get only new value
   private PushToDbListeners = this.createObserver<PushEventType<DataType>>();
   private RemoveFromDbListeners =
@@ -37,9 +38,12 @@ export class Observer<DataType> implements IObserver<DataType> {
         return () => (listeners = listeners.filter((func) => func !== cb));
       },
       publish: (ev) => {
-        listeners.forEach((cb) => cb(ev));
+        if (!this.logDate) listeners.forEach((cb) => cb(ev));
+        else listeners.forEach((cb) => cb({ ...ev, happenedAt: new Date() }));
       },
     };
   }
-  constructor() {}
+  constructor(logDate: boolean) {
+    this.logDate = logDate;
+  }
 }

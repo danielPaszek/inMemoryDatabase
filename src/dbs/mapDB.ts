@@ -12,12 +12,8 @@ interface pushProps<T> {
 }
 export class MapDB<DataType> extends BaseDB<DataType> {
   protected db: Map<keyof any, DataType>;
-  public constructor(
-    isDevMode: boolean,
-    observer?: IObserver<DataType>,
-    filter?: IFilter<DataType>
-  ) {
-    super(isDevMode, observer, filter);
+  public constructor(isDevMode: boolean, logDate?: boolean) {
+    super(isDevMode, logDate);
     this.db = new Map<keyof any, DataType>();
     this.db.get(1);
   }
@@ -37,9 +33,7 @@ export class MapDB<DataType> extends BaseDB<DataType> {
       }
       this.db.delete(props.key);
       if (result !== undefined) {
-        this.pubSub
-          .getRemoveFromDbListeners()
-          .publish({ removeValue: result, happenedAt: new Date() });
+        this.pubSub.getRemoveFromDbListeners().publish({ removeValue: result });
       }
     } catch (error: any) {
       if (this.isDevMode) console.log(error.message);
@@ -53,9 +47,7 @@ export class MapDB<DataType> extends BaseDB<DataType> {
     try {
       result = cloneDeep(this.db.get(key));
       if (result !== undefined) {
-        this.pubSub
-          .getGetFromDbListeners()
-          .publish({ accessedValue: result, happenedAt: new Date() });
+        this.pubSub.getGetFromDbListeners().publish({ accessedValue: result });
       }
       return result;
     } catch (error: any) {
@@ -71,9 +63,7 @@ export class MapDB<DataType> extends BaseDB<DataType> {
         throw new Error("Couldn't pass filter");
       }
       this.db.set(props.key, cloneDeep(props.item));
-      this.pubSub
-        .getPushToDbListeners()
-        .publish({ newValue: props.item, happenedAt: new Date() });
+      this.pubSub.getPushToDbListeners().publish({ newValue: props.item });
     } catch (error: any) {
       if (this.isDevMode) console.log(error.message);
       return;

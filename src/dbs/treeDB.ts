@@ -25,11 +25,7 @@ export class TreeDB<
   contains(item: DataType) {
     return this.db.contains(item);
   }
-  public constructor(
-    isDevMode: boolean,
-    observer?: IObserver<DataType>,
-    filter?: IFilter<DataType>
-  ) {
-    super(isDevMode, observer, filter);
+  public constructor(isDevMode: boolean, logDate?: boolean) {
+    super(isDevMode, logDate);
   }
 }

@@ -12,10 +12,7 @@ export interface GetEventType<T> {
   accessedValue: T;
   happenedAt?: Date;
 }
-//checks if it has id
-export interface MapMinimalRecord {
-  id: keyof any;
-}
+
 //checks if it can evaluate object
 export interface TreeMinimalRecord {
   valueOf: () => number | string;

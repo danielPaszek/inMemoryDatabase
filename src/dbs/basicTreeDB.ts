@@ -7,24 +7,18 @@ export class BasicTreeDB<
   DataType extends TreeMinimalRecord
 > extends BaseDB<DataType> {
   protected db: BinaryTree<DataType>;
-  public constructor(
-    isDevMode: boolean,
-    observer?: IObserver<DataType>,
-    filter?: IFilter<DataType>
-  ) {
-    super(isDevMode, observer, filter);
+  public constructor(isDevMode: boolean, logDate?: boolean) {
+    super(isDevMode, logDate);
     this.db = new Tree<DataType>();
   }
   /**
    * @returns always returns void!
    */
 
-  public remove(item: DataType) {
+  public remove(item: DataType): void {
     try {
       this.db.delete(item);
-      this.pubSub
-        .getRemoveFromDbListeners()
-        .publish({ removeValue: item, happenedAt: new Date() });
+      this.pubSub.getRemoveFromDbListeners().publish({ removeValue: item });
     } catch (error: any) {
       if (this.isDevMode) console.log(error.message);
       return;
@@ -37,9 +31,7 @@ export class BasicTreeDB<
         throw new Error("Couldn't pass filter");
       }
       this.db.insert(cloneDeep(item));
-      this.pubSub
-        .getPushToDbListeners()
-        .publish({ newValue: item, happenedAt: new Date() });
+      this.pubSub.getPushToDbListeners().publish({ newValue: item });
     } catch (error: any) {
       if (this.isDevMode) console.log(error.message);
     }

@@ -24,13 +24,9 @@ export abstract class BaseDB<DataType> {
   abstract clear(): void;
 
   //default observer
-  constructor(
-    isDevMode: boolean,
-    observer: IObserver<DataType> = new Observer<DataType>(),
-    filter: IFilter<DataType> = new Filter<DataType>()
-  ) {
-    this.pubSub = observer;
-    this.filter = filter;
+  constructor(isDevMode: boolean, logDate?: boolean) {
+    this.pubSub = new Observer<DataType>(logDate || false);
+    this.filter = new Filter<DataType>();
     this.isDevMode = isDevMode;
   }
 }
